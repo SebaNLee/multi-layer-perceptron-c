@@ -1,0 +1,6 @@
+for each:
+
+pipeline.json with directives
+dataset.c with preprocessing
+/models to save trained models for later import
+main.c uses /mlp lib to run above stuff
