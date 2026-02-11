@@ -8,3 +8,8 @@ typedef struct
     size_t rank; // number of dimensions
     size_t size; // total number of elements
 } Tensor;
+
+Tensor * tensor_new(size_t rank, size_t * shape);
+void tensor_free(Tensor * tensor);
+float tensor_get(Tensor * tensor, size_t * index);
+void tensor_set(Tensor * tensor, size_t * index, float value);
