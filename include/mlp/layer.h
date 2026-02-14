@@ -1,3 +1,4 @@
+#include "tensor.h"
 
 typedef struct
 {
@@ -9,6 +10,15 @@ typedef struct
 
 typedef struct
 {
+    // Z = W X + b
+    // A = phi(Z)
+
+    Tensor *X; // input
+    Tensor *A; // output
+
+    Tensor *dA;
+    Tensor *dX;
+
     LayerOps * ops;
     void * impl;
 } Layer;
