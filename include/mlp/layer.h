@@ -2,8 +2,8 @@
 typedef struct
 {
     // TODO
-    void (*feedforward)(Layer * self);
-    void (*backpropagation)(Layer * self);
+    void (*forward)(Layer * self);
+    void (*backward)(Layer * self);
     void (*free)(Layer * self);
 } LayerOps;
 
