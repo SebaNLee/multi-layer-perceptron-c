@@ -22,3 +22,26 @@ typedef struct
     LayerOps * ops;
     void * impl;
 } Layer;
+
+
+// TODO dense example
+/*
+typedef struct
+{
+    // Z = W X + b
+    // A = phi(Z)
+    // dZ = dL/dZ
+    // dW = dL/dW
+    // db = dL/db
+
+    Tensor *W;
+    Tensor *b;
+
+    Tensor *Z;
+
+    Tensor *dZ;
+    Tensor *dW;
+    Tensor *db;
+
+} Dense;
+*/
