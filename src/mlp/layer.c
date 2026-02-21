@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "layer.h"
 
-Layer *layer_create(void *impl, LayerOps *ops)
+Layer *layer_new(void *impl, LayerOps *ops)
 {
     if (!impl || !ops)
     {
