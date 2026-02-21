@@ -16,32 +16,9 @@ typedef struct
     Tensor *X; // input
     Tensor *A; // output
 
-    Tensor *dA;
-    Tensor *dX;
+    Tensor *dA; // TODO
+    Tensor *dX; // TODO
 
     LayerOps * ops;
     void * impl;
 } Layer;
-
-
-// TODO dense example
-/*
-typedef struct
-{
-    // Z = W X + b
-    // A = phi(Z)
-    // dZ = dL/dZ
-    // dW = dL/dW
-    // db = dL/db
-
-    Tensor *W;
-    Tensor *b;
-
-    Tensor *Z;
-
-    Tensor *dZ;
-    Tensor *dW;
-    Tensor *db;
-
-} Dense;
-*/
