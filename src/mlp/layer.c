@@ -45,4 +45,5 @@ void layer_free(Layer *layer)
     }
 
     layer->ops->free(layer);
+    free(layer);
 }
