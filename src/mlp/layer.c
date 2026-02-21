@@ -27,12 +27,22 @@ Layer *layer_create(void *impl, LayerOps *ops)
 
 void layer_forward(Layer *layer, Tensor *input)
 {
+    if (!layer || !layer->ops || !layer->ops->forward)
+    {
+        return;
+    }
+
     layer->X = input;
     layer->ops->forward(layer);
 }
 
 void layer_backward(Layer *layer, Tensor *grad_output)
 {
+    if (!layer || !layer->ops || !layer->ops->backward)
+    {
+        return;
+    }
+
     layer->dA = grad_output;
     layer->ops->backward(layer);
 }
@@ -42,6 +52,11 @@ void layer_free(Layer *layer)
     if (!layer)
     {
         return;
+    }
+
+    if (layer->ops && layer->ops->free)
+    {
+        layer->ops->free(layer);
     }
 
     layer->ops->free(layer);
