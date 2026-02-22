@@ -7,77 +7,77 @@ Tensor *tensor_new(size_t rank, size_t *shape)
         return NULL;
     }
 
-    Tensor *t = malloc(sizeof(Tensor));
-    if (!t)
+    Tensor *tensor = malloc(sizeof(Tensor));
+    if (!tensor)
     {
         return NULL;
     }
 
-    t->shape = malloc(rank * sizeof(size_t));
-    t->strides = malloc(rank * sizeof(size_t));
-    if (!t->shape || !t->strides)
+    tensor->shape = malloc(rank * sizeof(size_t));
+    tensor->strides = malloc(rank * sizeof(size_t));
+    if (!tensor->shape || !tensor->strides)
     {
-        tensor_free(t);
+        tensor_free(tensor);
         return NULL;
     }
 
-    t->size = 1;
+    tensor->size = 1;
     for (size_t i = 0; i < rank; i++)
     {
-        t->shape[i] = shape[i];
-        t->size *= shape[i];
+        tensor->shape[i] = shape[i];
+        tensor->size *= shape[i];
     }
 
-    t->rank = rank;
-    t->strides[rank - 1] = 1;
+    tensor->rank = rank;
+    tensor->strides[rank - 1] = 1;
     for (size_t i = rank - 1; i > 0; i++)
     {
-        t->strides[i - 1] = t->strides[i] * t->shape[i];
+        tensor->strides[i - 1] = tensor->strides[i] * tensor->shape[i];
     }
 
-    t->data = calloc(t->size, sizeof(float));
-    if (!t->data)
+    tensor->data = calloc(tensor->size, sizeof(float));
+    if (!tensor->data)
     {
-        tensor_free(t);
+        tensor_free(tensor);
         return NULL;
     }
 
-    return t;
+    return tensor;
 }
 
-void tensor_free(Tensor *t)
+void tensor_free(Tensor *tensor)
 {
-    if (!t)
+    if (!tensor)
     {
         return;
     }
 
-    free(t->data);
-    free(t->shape);
-    free(t->strides);
-    free(t);
+    free(tensor->data);
+    free(tensor->shape);
+    free(tensor->strides);
+    free(tensor);
 }
 
-float tensor_get(Tensor *t, size_t *idx)
+float tensor_get(Tensor *tensor, size_t *idx)
 {
     // TODO defensive params
 
-    return t->data[tensor_offset(t, idx)];
+    return tensor->data[tensor_offset(tensor, idx)];
 }
 
-void tensor_set(Tensor *t, size_t *idx, float value)
+void tensor_set(Tensor *tensor, size_t *idx, float value)
 {
     // TODO defensive params
 
-    t->data[tensor_offset(t, idx)] = value;
+    tensor->data[tensor_offset(tensor, idx)] = value;
 }
 
-static size_t tensor_offset(Tensor *t, size_t *idx)
+static size_t tensor_offset(Tensor *tensor, size_t *idx)
 {
     size_t offset = 0;
-    for (size_t i = 0; i < t->rank; i++)
+    for (size_t i = 0; i < tensor->rank; i++)
     {
-        offset += idx[i] * t->strides[i];
+        offset += idx[i] * tensor->strides[i];
     }
     
     return offset;

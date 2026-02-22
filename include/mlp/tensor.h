@@ -12,7 +12,7 @@ typedef struct
 } Tensor;
 
 Tensor *tensor_new(size_t rank, size_t *shape);
-void tensor_free(Tensor *t);
-float tensor_get(Tensor *t, size_t *idx);
-void tensor_set(Tensor *t, size_t *idx, float value);
-static size_t tensor_offset(Tensor *t, size_t *idx);
+void tensor_free(Tensor *tensor);
+float tensor_get(Tensor *tensor, size_t *idx);
+void tensor_set(Tensor *tensor, size_t *idx, float value);
+static size_t tensor_offset(Tensor *tensor, size_t *idx);
