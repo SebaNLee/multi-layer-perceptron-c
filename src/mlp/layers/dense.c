@@ -47,6 +47,18 @@ static void layer_dense_forward(Layer *self)
 
 static void layer_dense_backward(Layer *self)
 static void layer_dense_free(Layer *self)
+{
+    Dense *dense = self->impl;
+
+    tensor_free(dense->W);
+    tensor_free(dense->b);
+    tensor_free(dense->Z);
+    tensor_free(dense->dW);
+    tensor_free(dense->db);
+
+    free(dense);
+}
+
 Layer *layer_dense_new(size_t input, size_t output)
 {
     size_t W_shape[2] = {output, input};
