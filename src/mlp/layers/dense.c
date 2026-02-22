@@ -18,3 +18,7 @@ typedef struct
     Tensor *dW; // TODO
     Tensor *db; // TODO
 } Dense;
+static void layer_dense_forward(Layer *self)
+static void layer_dense_backward(Layer *self)
+static void layer_dense_free(Layer *self)
+Layer *layer_dense_new(size_t input, size_t output)
