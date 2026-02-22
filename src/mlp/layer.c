@@ -14,10 +14,10 @@ Layer *layer_new(void *impl, LayerOps *ops)
         return NULL;
     }
 
-    layer->X = NULL;
-    layer->A = NULL;
-    layer->dA = NULL;
-    layer->dX = NULL;
+    layer->input = NULL;
+    layer->output = NULL;
+    layer->gradient_output = NULL;
+    layer->gradient_input = NULL;
 
     layer->ops = ops;
     layer->impl = impl;
@@ -32,7 +32,7 @@ void layer_forward(Layer *layer, Tensor *input)
         return;
     }
 
-    layer->X = input;
+    layer->input = input;
     layer->ops->forward(layer);
 }
 
@@ -43,7 +43,7 @@ void layer_backward(Layer *layer, Tensor *grad_output)
         return;
     }
 
-    layer->dA = grad_output;
+    layer->gradient_output = grad_output;
     layer->ops->backward(layer);
 }
 

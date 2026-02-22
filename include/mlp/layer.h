@@ -2,7 +2,6 @@
 
 typedef struct
 {
-    // TODO
     void (*forward)(Layer * self);
     void (*backward)(Layer * self);
     void (*free)(Layer * self);
@@ -10,14 +9,11 @@ typedef struct
 
 typedef struct
 {
-    // Z = W X + b
-    // A = phi(Z)
+    Tensor *input;
+    Tensor *output;
 
-    Tensor *X; // input
-    Tensor *A; // output
-
-    Tensor *dA; // TODO
-    Tensor *dX; // TODO
+    Tensor *gradient_input;
+    Tensor *gradient_output;
 
     LayerOps * ops;
     void * impl;
