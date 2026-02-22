@@ -22,6 +22,7 @@ typedef struct
 static void layer_dense_forward(Layer *self)
 {
     Dense *dense = self->impl;
+    Tensor *X = self->input;
     size_t output = dense->W->shape[0];
     size_t input = dense->W->shape[1];
 
@@ -34,7 +35,7 @@ static void layer_dense_forward(Layer *self)
             size_t W_idx[2] = {i, j};
             size_t X_idx[2] = {j, 0};
 
-            sum += tensor_get(dense->W, W_idx) * tensor_get(self->X, X_idx);
+            sum += tensor_get(dense->W, W_idx) * tensor_get(X, X_idx);
         }
         
         size_t Z_idx[2] = {i, 0};
@@ -42,7 +43,7 @@ static void layer_dense_forward(Layer *self)
         tensor_set(dense->Z, Z_idx, sum);
     }
 
-    self->A = dense->Z;
+    self->output = dense->Z;
 }
 
 static void layer_dense_backward(Layer *self)
