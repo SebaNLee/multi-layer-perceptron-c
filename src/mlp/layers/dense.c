@@ -48,3 +48,27 @@ static void layer_dense_forward(Layer *self)
 static void layer_dense_backward(Layer *self)
 static void layer_dense_free(Layer *self)
 Layer *layer_dense_new(size_t input, size_t output)
+{
+    size_t W_shape[2] = {output, input};
+    size_t b_shape[2] = {output, 1};
+
+    Dense *dense = malloc(sizeof(Dense));
+    if (!dense)
+    {
+        return NULL;
+    }
+
+    dense->W = tensor_new(2, W_shape);
+    dense->b = tensor_new(2, b_shape);
+    dense->Z = tensor_new(2, b_shape);
+    dense->dW = tensor_new(2, W_shape);
+    dense->db = tensor_new(2, b_shape);
+
+    static const LayerOps ops = {
+        .forward = layer_dense_forward,
+        .backward = layer_dense_backward,
+        .free = layer_dense_free
+    };
+
+    return layer_new(dense, &ops);
+}
