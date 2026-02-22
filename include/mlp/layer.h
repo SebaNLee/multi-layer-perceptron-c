@@ -25,6 +25,6 @@ typedef struct
 
 // generic layer API, calls corresponding LayerOps *
 Layer *layer_new(void *impl, LayerOps *ops);
-void layer_forward(Layer *l, Tensor *input);
-void layer_backward(Layer *l, Tensor *grad_output);
-void layer_free(Layer *l);
+void layer_forward(Layer *layer, Tensor *input);
+void layer_backward(Layer *layer, Tensor *grad_output);
+void layer_free(Layer *layer);
