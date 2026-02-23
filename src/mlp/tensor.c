@@ -10,35 +10,6 @@ static size_t tensor_offset(const Tensor *tensor, const size_t *idx);
 
 /** @} */
 
-static bool tensor_same_shape(const Tensor *tensor1, const Tensor *tensor2)
-{
-    if (tensor1->rank != tensor2->rank)
-    {
-        return false;
-    }
-
-    for (size_t i = 0; i < tensor1->rank; i++)
-    {
-        if (tensor1->shape[i] != tensor2->shape[i])
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-static size_t tensor_offset(const Tensor *tensor, const size_t *idx)
-{
-    size_t offset = 0;
-    for (size_t i = 0; i < tensor->rank; i++)
-    {
-        offset += idx[i] * tensor->strides[i];
-    }
-
-    return offset;
-}
-
 Tensor *tensor_new(size_t rank, const size_t *shape)
 {
     if (rank == 0 || !shape)
@@ -111,14 +82,15 @@ void tensor_set(Tensor *tensor, const size_t *idx, float value)
     tensor->data[tensor_offset(tensor, idx)] = value;
 }
 
-void tensor_copy(Tensor *destination, const Tensor *source)
+static size_t tensor_offset(const Tensor *tensor, const size_t *idx)
 {
-    if (!tensor_same_shape(destination, source))
+    size_t offset = 0;
+    for (size_t i = 0; i < tensor->rank; i++)
     {
-        return;
+        offset += idx[i] * tensor->strides[i];
     }
 
-    memcpy(destination->data, source->data, source->size * sizeof(float));
+    return offset;
 }
 
 void tensor_fill(Tensor *tensor, float value)
@@ -132,6 +104,34 @@ void tensor_fill(Tensor *tensor, float value)
 void tensor_zero(Tensor *tensor)
 {
     memset(tensor->data, 0, tensor->size * sizeof(float));
+}
+
+static bool tensor_same_shape(const Tensor *tensor1, const Tensor *tensor2)
+{
+    if (tensor1->rank != tensor2->rank)
+    {
+        return false;
+    }
+
+    for (size_t i = 0; i < tensor1->rank; i++)
+    {
+        if (tensor1->shape[i] != tensor2->shape[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void tensor_copy(Tensor *destination, const Tensor *source)
+{
+    if (!tensor_same_shape(destination, source))
+    {
+        return;
+    }
+
+    memcpy(destination->data, source->data, source->size * sizeof(float));
 }
 
 float tensor_dot_product(const Tensor *tensor1, const Tensor *tensor2)
