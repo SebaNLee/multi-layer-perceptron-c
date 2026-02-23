@@ -12,7 +12,7 @@ static size_t tensor_offset(const Tensor *tensor, const size_t *idx);
 
 static bool tensor_same_shape(const Tensor *tensor1, const Tensor *tensor2)
 {
-    if (tensor1->rank != tensor2->rank)
+    if (!tensor1 || !tensor2 || tensor1->rank != tensor2->rank)
     {
         return false;
     }
@@ -30,9 +30,21 @@ static bool tensor_same_shape(const Tensor *tensor1, const Tensor *tensor2)
 
 static size_t tensor_offset(const Tensor *tensor, const size_t *idx)
 {
+    if (!tensor)
+    {
+        // TODO error
+        return 0;
+    }
+
     size_t offset = 0;
     for (size_t i = 0; i < tensor->rank; i++)
     {
+        if (idx[i] < tensor->shape[i])
+        {
+            // TODO error
+            return 0;
+        }
+
         offset += idx[i] * tensor->strides[i];
     }
 
@@ -113,7 +125,7 @@ void tensor_set(Tensor *tensor, const size_t *idx, float value)
 
 void tensor_copy(Tensor *destination, const Tensor *source)
 {
-    if (!tensor_same_shape(destination, source))
+    if (!destination || !source || !tensor_same_shape(destination, source))
     {
         return;
     }
