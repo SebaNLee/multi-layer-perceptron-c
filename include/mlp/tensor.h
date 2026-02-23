@@ -18,8 +18,6 @@ void tensor_free(Tensor *tensor);
 float tensor_get(const Tensor *tensor, const size_t *idx);
 void tensor_set(Tensor *tensor, const size_t *idx, float value);
 void tensor_copy(Tensor *destination, const Tensor *source);
-static size_t tensor_offset(const Tensor *tensor, const size_t *idx);
-static bool tensor_same_shape(const Tensor *tensor1, const Tensor *tensor2);
 
 void tensor_fill(Tensor *tensor, float value);
 void tensor_zero(Tensor *tensor);
