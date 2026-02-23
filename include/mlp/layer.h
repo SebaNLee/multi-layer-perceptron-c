@@ -2,9 +2,9 @@
 
 typedef struct
 {
-    void (*forward)(Layer * self);
-    void (*backward)(Layer * self);
-    void (*free)(Layer * self);
+    void (*forward)(Layer *self);
+    void (*backward)(Layer *self);
+    void (*free)(Layer *self);
 } LayerOps;
 
 typedef struct
@@ -15,8 +15,8 @@ typedef struct
     Tensor *gradient_input;
     Tensor *gradient_output;
 
-    LayerOps * ops;
-    void * impl;
+    LayerOps *ops;
+    void *impl;
 } Layer;
 
 // generic layer API, calls corresponding LayerOps *

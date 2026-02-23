@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include "layer.h"
+#include <stdlib.h>
 
 Layer *layer_new(void *impl, LayerOps *ops)
 {

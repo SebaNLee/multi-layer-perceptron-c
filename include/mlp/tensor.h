@@ -1,7 +1,7 @@
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
 typedef struct
 {
@@ -27,9 +27,9 @@ Tensor *tensor_sub(const Tensor *tensor1, const Tensor *tensor2);
 Tensor *tensor_mul(const Tensor *tensor1, const Tensor *tensor2);
 Tensor *tensor_scale(const Tensor *tensor1, float scalar);
 
-float tensor_dot_product(const Tensor *tensor1, const Tensor *tensor2); // rank 1
-Tensor *tensor_outer_product(const Tensor *tensor1, const Tensor *tensor2); // rank 1
+float tensor_dot_product(const Tensor *tensor1, const Tensor *tensor2);             // rank 1
+Tensor *tensor_outer_product(const Tensor *tensor1, const Tensor *tensor2);         // rank 1
 Tensor *tensor_matrix_multiplication(const Tensor *tensor1, const Tensor *tensor2); // rank 2
 
-Tensor *tensor_transpose_2d(const Tensor *tensor); // implementation: returns copy
+Tensor *tensor_transpose_2d(const Tensor *tensor);                              // implementation: returns copy
 Tensor *tensor_reshape(const Tensor *tensor, size_t rank, const size_t *shape); // implementation: returns copy

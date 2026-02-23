@@ -1,6 +1,6 @@
-#include <stddef.h>
 #include "layer.h"
 #include "tensor.h"
+#include <stddef.h>
 
 typedef struct
 {
