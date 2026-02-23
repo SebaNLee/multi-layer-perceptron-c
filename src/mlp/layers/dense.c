@@ -51,6 +51,72 @@ static void layer_dense_forward(Layer *self)
 
 static void layer_dense_backward(Layer *self)
 {
+    Dense *dense = self->impl;
+    Tensor *X = self->input;
+    Tensor *dZ = self->gradient_output;
+    Tensor *W = dense->W;
+
+    // dW = dZ X^T
+    Tensor *X_transposed = tensor_transpose_2d(X);
+    if (!X_transposed)
+    {
+        return;
+    }
+
+    Tensor *dW = tensor_matrix_multiplication(dZ, X_transposed);
+    tensor_free(X_transposed);
+    if (!dW)
+    {
+        return;
+    }
+
+    // dX = W^T dZ
+    Tensor *W_transposed = tensor_transpose_2d(W);
+    if (!W_transposed)
+    {
+        tensor_free(dW);
+        return;
+    }
+
+    Tensor *dX = tensor_matrix_multiplication(W_transposed, dZ);
+    tensor_free(W_transposed);
+    if (!dX)
+    {
+        tensor_free(dW);
+        return;
+    }
+
+    // !!
+    // !! TODO batch management
+    // !!
+    // db = dZ (batch size = 1)
+    Tensor *db = tensor_clone(dZ);
+    if (!db)
+    {
+        tensor_free(dX);
+        tensor_free(dW);
+        return;
+    }
+
+    // assign results
+    if (dense->dW)
+    {
+        tensor_free(dense->dW);
+    }
+
+    if (self->gradient_input)
+    {
+        tensor_free(self->gradient_input);
+    }
+
+    if (dense->db)
+    {
+        tensor_free(dense->db);
+    }
+
+    dense->dW = dW;
+    self->gradient_input = dX;
+    dense->db = db;
 }
 
 static void layer_dense_free(Layer *self)
