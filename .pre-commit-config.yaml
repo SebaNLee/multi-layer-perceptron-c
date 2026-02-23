@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: clang-format auto-fix
+        entry: bash -c 'clang-format -i "$@"; git add "$@"' --
+        language: system
+        files: \.(c|h)$
+        pass_filenames: true

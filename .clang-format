@@ -1,0 +1,6 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+BreakBeforeBraces: Allman
+SpaceBeforeParens: ControlStatements
+AlwaysBreakAfterReturnType: None
+ColumnLimit: 0
