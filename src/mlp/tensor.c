@@ -89,7 +89,7 @@ static size_t tensor_offset(const Tensor *tensor, const size_t *idx)
     {
         offset += idx[i] * tensor->strides[i];
     }
-    
+
     return offset;
 }
 
@@ -156,7 +156,9 @@ float tensor_dot_product(const Tensor *tensor1, const Tensor *tensor2)
     return sum;
 }
 
-Tensor *tensor_transpose_2d(const Tensor *tensor)
+Tensor *tensor_transpose_2d
+
+    (const Tensor *tensor)
 {
     if (!tensor || tensor->rank != 2)
     {
@@ -173,7 +175,7 @@ Tensor *tensor_transpose_2d(const Tensor *tensor)
 
     size_t tensor_idx[2];
     size_t transpose_idx[2];
-    
+
     for (size_t i = 0; i < tensor->shape[0]; i++)
     {
         for (size_t j = 0; j < tensor->shape[1]; j++)
