@@ -23,27 +23,30 @@ static void layer_dense_forward(Layer *self)
 {
     Dense *dense = self->impl;
     Tensor *X = self->input;
-    size_t output = dense->W->shape[0];
-    size_t input = dense->W->shape[1];
+    Tensor *W = dense->W;
+    Tensor *b = dense->b;
 
-    for (size_t i = 0; i < output; i++)
+    // Z = W X + b
+    Tensor *WX = tensor_matrix_multiplication(W, X);
+    if (!WX)
     {
-        float sum = 0;
-
-        for (size_t j = 0; j < input; j++)
-        {
-            size_t W_idx[2] = {i, j};
-            size_t X_idx[2] = {j, 0};
-
-            sum += tensor_get(dense->W, W_idx) * tensor_get(X, X_idx);
-        }
-
-        size_t Z_idx[2] = {i, 0};
-        sum += tensor_get(dense->b, Z_idx);
-        tensor_set(dense->Z, Z_idx, sum);
+        return;
     }
 
-    self->output = dense->Z;
+    Tensor *Z = tensor_add(WX, b);
+    tensor_free(WX);
+    if (!Z)
+    {
+        return;
+    }
+
+    if (dense->Z)
+    {
+        tensor_free(dense->Z);
+    }
+
+    dense->Z = Z;
+    self->output = Z;
 }
 
 static void layer_dense_backward(Layer *self)
