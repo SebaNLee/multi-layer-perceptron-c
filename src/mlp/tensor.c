@@ -123,14 +123,22 @@ void tensor_set(Tensor *tensor, const size_t *idx, float value)
     tensor->data[tensor_offset(tensor, idx)] = value;
 }
 
-void tensor_copy(Tensor *destination, const Tensor *source)
+Tensor *tensor_clone(const Tensor *tensor)
 {
-    if (!destination || !source || !tensor_same_shape(destination, source))
+    if (!tensor)
     {
         return;
     }
 
-    memcpy(destination->data, source->data, source->size * sizeof(float));
+    Tensor *clone = tensor_new(tensor->rank, tensor->shape);
+    if (!clone)
+    {
+        return NULL;
+    }
+
+    memcpy(clone->data, tensor->data, tensor->size * sizeof(float));
+
+    return clone;
 }
 
 void tensor_fill(Tensor *tensor, float value)
