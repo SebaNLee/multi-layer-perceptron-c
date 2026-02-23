@@ -141,7 +141,7 @@ float tensor_dot_product(const Tensor *tensor1, const Tensor *tensor2)
         return 0;
     }
 
-    if (tensor1->rank != 1 || tensor2->rank != 1)
+    if (tensor1->rank != 1 || tensor2->rank != 1 || tensor1->shape[0] != tensor2->shape[0])
     {
         return 0;
     }
