@@ -134,46 +134,26 @@ void tensor_copy(Tensor *destination, const Tensor *source)
     memcpy(destination->data, source->data, source->size * sizeof(float));
 }
 
-float tensor_dot(Tensor *a, Tensor *b)
+float tensor_dot_product(const Tensor *tensor1, const Tensor *tensor2)
 {
-    if (!a || !b)
+    if (!tensor1 || !tensor2)
     {
         return 0;
     }
 
-    // rank 1
-    if (a->rank == 1 && b->rank == 1)
+    if (tensor1->rank != 1 && tensor2->rank != 1)
     {
-        if (a->shape[0] != b->shape[0])
-        {
-            return 0;
-        }
-
-        float sum = 0;
-
-        for (size_t i = 0; i < a->shape[0]; i++)
-        {
-            sum += a->data[i] * b->data[i];
-        }
-
-        return sum;
+        return 0;
     }
 
-    // rank 2 shape n,1
-    if (a->rank == 2 && b->rank == 2 && a->shape[1] == 1 && b->shape[1] == 1 && a->shape[0] == b->shape[0])
+    float sum = 0;
+
+    for (size_t i = 0; i < tensor1->shape[0]; i++)
     {
-        float sum = 0;
-
-        for (size_t i = 0; i < a->shape[0]; i++)
-        {
-            size_t idx[2] = {i, 0};
-            sum += tensor_get(a, idx) * tensor_get(b, idx);
-        }
-
-        return sum;
+        sum += tensor1->data[i] * tensor2->data[i];
     }
 
-    return 0;
+    return sum;
 }
 
 Tensor *tensor_transpose_2d(const Tensor *tensor)
