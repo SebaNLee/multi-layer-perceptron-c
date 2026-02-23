@@ -2,13 +2,13 @@
 
 typedef struct
 {
-    // Z = W dot X + b
+    // Z = W X + b
     // A = phi(Z)
 
     // dZ = dA
-    // dW = dZ dot X^T
+    // dW = dZ X^T
     // db = dZ
-    // dX = W^T dot dZ
+    // dX = W^T dZ
 
     Tensor *W; // weights
     Tensor *b; // biases
