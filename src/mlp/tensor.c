@@ -1,6 +1,16 @@
 #include "tensor.h"
 
-Tensor *tensor_new(size_t rank, size_t *shape)
+/**
+ * @name Internal helpers
+ * @{
+ */
+
+static bool tensor_same_shape(const Tensor *tensor1, const Tensor *tensor2);
+static size_t tensor_offset(const Tensor *tensor, const size_t *idx);
+
+/** @} */
+
+Tensor *tensor_new(size_t rank, const size_t *shape)
 {
     if (rank == 0 || !shape)
     {
@@ -58,21 +68,21 @@ void tensor_free(Tensor *tensor)
     free(tensor);
 }
 
-float tensor_get(Tensor *tensor, size_t *idx)
+float tensor_get(const Tensor *tensor, const size_t *idx)
 {
     // TODO defensive params
 
     return tensor->data[tensor_offset(tensor, idx)];
 }
 
-void tensor_set(Tensor *tensor, size_t *idx, float value)
+void tensor_set(Tensor *tensor, const size_t *idx, float value)
 {
     // TODO defensive params
 
     tensor->data[tensor_offset(tensor, idx)] = value;
 }
 
-static size_t tensor_offset(Tensor *tensor, size_t *idx)
+static size_t tensor_offset(const Tensor *tensor, const size_t *idx)
 {
     size_t offset = 0;
     for (size_t i = 0; i < tensor->rank; i++)
@@ -96,16 +106,16 @@ void tensor_zero(Tensor *tensor)
     memset(tensor->data, 0, tensor->size * sizeof(float));
 }
 
-static bool tensor_same_shape(Tensor *a, Tensor *b)
+static bool tensor_same_shape(const Tensor *tensor1, const Tensor *tensor2)
 {
-    if (a->rank != b->rank)
+    if (tensor1->rank != tensor2->rank)
     {
         return false;
     }
 
-    for (size_t i = 0; i < a->rank; i++)
+    for (size_t i = 0; i < tensor1->rank; i++)
     {
-        if (a->shape[i] != b->shape[i])
+        if (tensor1->shape[i] != tensor2->shape[i])
         {
             return false;
         }
@@ -114,7 +124,7 @@ static bool tensor_same_shape(Tensor *a, Tensor *b)
     return true;
 }
 
-void tensor_copy(Tensor *destination, Tensor *source)
+void tensor_copy(Tensor *destination, const Tensor *source)
 {
     if (!tensor_same_shape(destination, source))
     {
@@ -166,7 +176,7 @@ float tensor_dot(Tensor *a, Tensor *b)
     return 0;
 }
 
-Tensor *tensor_transpose_2d(Tensor *tensor)
+Tensor *tensor_transpose_2d(const Tensor *tensor)
 {
     if (!tensor || tensor->rank != 2)
     {
