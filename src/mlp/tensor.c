@@ -127,7 +127,7 @@ Tensor *tensor_clone(const Tensor *tensor)
 {
     if (!tensor)
     {
-        return;
+        return NULL;
     }
 
     Tensor *clone = tensor_new(tensor->rank, tensor->shape);
@@ -143,6 +143,11 @@ Tensor *tensor_clone(const Tensor *tensor)
 
 void tensor_fill(Tensor *tensor, float value)
 {
+    if (!tensor)
+    {
+        return;
+    }
+
     for (size_t i = 0; i < tensor->size; i++)
     {
         tensor->data[i] = value;
@@ -151,6 +156,11 @@ void tensor_fill(Tensor *tensor, float value)
 
 void tensor_zero(Tensor *tensor)
 {
+    if (!tensor)
+    {
+        return;
+    }
+
     memset(tensor->data, 0, tensor->size * sizeof(float));
 }
 
@@ -324,7 +334,7 @@ Tensor *tensor_matrix_multiplication(const Tensor *tensor1, const Tensor *tensor
                 size_t tensor1_idx[2] = {i, k};
                 size_t tensor2_idx[2] = {k, j};
 
-                sum += tensor1->data[i * tensor1->shape[1] + k] * tensor2->data[k * tensor2->shape[1] + j];
+                sum += tensor1->data[i * tensor1->shape[1] + k] * tensor2->data[k * tensor2->shape[1] + j]; // TODO should really use tensor_get (check efficiency)
             }
 
             size_t result_idx[2] = {i, j};
