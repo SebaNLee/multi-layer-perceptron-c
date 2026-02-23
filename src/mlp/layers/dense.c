@@ -21,6 +21,11 @@ typedef struct
 
 static void layer_dense_forward(Layer *self)
 {
+    if (!self || !self->impl)
+    {
+        return;
+    }
+
     Dense *dense = self->impl;
     Tensor *X = self->input;
     Tensor *W = dense->W;
@@ -51,6 +56,11 @@ static void layer_dense_forward(Layer *self)
 
 static void layer_dense_backward(Layer *self)
 {
+    if (!self || !self->impl)
+    {
+        return;
+    }
+
     Dense *dense = self->impl;
     Tensor *X = self->input;
     Tensor *dZ = self->gradient_output;
@@ -159,5 +169,15 @@ Layer *layer_dense_new(size_t input, size_t output)
         .backward = layer_dense_backward,
         .free = layer_dense_free};
 
-    return layer_new(dense, &ops);
+    Layer *layer = layer_new(dense, &ops);
+    if (!layer)
+    {
+        tensor_free(dense->W);
+        tensor_free(dense->b);
+        free(dense);
+
+        return NULL;
+    }
+
+    return layer;
 }
