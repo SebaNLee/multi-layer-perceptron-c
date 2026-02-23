@@ -10,5 +10,6 @@ for devs:
 
 pip install pre-commit
 pre-commit install
+(automatically applies clang formatting and adds it to the staging area)
 
  -->
