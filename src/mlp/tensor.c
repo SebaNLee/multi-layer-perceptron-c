@@ -316,7 +316,7 @@ Tensor *tensor_matrix_multiplication(const Tensor *tensor1, const Tensor *tensor
                 size_t tensor1_idx[2] = {i, k};
                 size_t tensor2_idx[2] = {k, j};
 
-                sum += tensor_get(tensor1, tensor1_idx) * tensor_get(tensor2, tensor2_idx);
+                sum += tensor1->data[i * tensor1->shape[1] + k] * tensor2->data[k * tensor2->shape[1] + j];
             }
 
             size_t result_idx[2] = {i, j};
