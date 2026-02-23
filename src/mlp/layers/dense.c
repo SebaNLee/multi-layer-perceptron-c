@@ -2,7 +2,7 @@
 
 typedef struct
 {
-    // Z = W X + b
+    // Z = W dot X + b
     // A = phi(Z)
 
     // dZ = dA
