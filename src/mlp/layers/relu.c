@@ -25,3 +25,26 @@ typedef struct
 {
     char _; // unused
 } ReLU;
+Layer *layer_relu_new(void)
+{
+    ReLU *relu = calloc(1, sizeof(ReLU));
+    if (!relu)
+    {
+        return NULL;
+    }
+
+    static const LayerOps ops = {
+        .forward = layer_relu_forward,
+        .backward = layer_relu_backward,
+        .free = layer_relu_free};
+
+    Layer *layer = layer_new(relu, &ops);
+    if (!layer)
+    {
+        free(relu);
+
+        return NULL;
+    }
+
+    return layer;
+}
