@@ -52,6 +52,41 @@ static void layer_relu_forward(Layer *self)
 
     self->output = A;
 }
+
+static void layer_relu_backward(Layer *self)
+{
+    if (!self || !self->input || !self->gradient_output)
+    {
+        return;
+    }
+
+    Tensor *X = self->input;
+    Tensor *dA = self->gradient_output;
+
+    // dX = dA if X > 0
+    // dX = 0  if 0
+    Tensor *dX = tensor_clone(dA);
+    if (!dX)
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < dX->size; i++)
+    {
+        if (X->data[i] < 0)
+        {
+            dX->data[i] = 0;
+        }
+    }
+
+    if (self->gradient_input)
+    {
+        tensor_free(self->gradient_input);
+    }
+
+    self->gradient_input = dX;
+}
+
 static void layer_relu_free(Layer *self)
 {
     // holder, just for structure
