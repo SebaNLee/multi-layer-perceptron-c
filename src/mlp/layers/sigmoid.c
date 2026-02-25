@@ -8,13 +8,13 @@
  *  X
  *
  * Forward computes:
- *  A = 1 / (1 + e^(-x))
+ *  A_i = 1 / (1 + e^(-X_i))
  *
  * Backward input:
  *  dA = gradient_output
  *
  * Backward computes:
- *  dX = dA * A * (1 - A)
+ *  dX_i = dA_i * A_i * (1 - A_i)
  *
  * Shapes:
  *  X: (n, 1)
@@ -34,7 +34,7 @@ static void layer_sigmoid_forward(Layer *self)
 
     Tensor *Z = self->input;
 
-    // A = 1 / (1 + e^(-x))
+    // A_i = 1 / (1 + e^(-X_i))
     Tensor *A = tensor_clone(Z);
     if (!A)
     {
@@ -65,7 +65,7 @@ static void layer_sigmoid_backward(Layer *self)
     Tensor *A = self->output;
     Tensor *dA = self->gradient_output;
 
-    // dX = dA * A * (1 - A)
+    // dX_i = dA_i * A_i * (1 - A_i)
     Tensor *dX = tensor_clone(dA);
     if (!dX)
     {

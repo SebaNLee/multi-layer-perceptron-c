@@ -7,20 +7,19 @@
  *  X
  *
  * Forward computes:
- *  A = max(0, X)
+ *  A_i = max(0, X_i)
  *
  * Backward input:
  *  dA = gradient_output
  *
  * Backward computes:
- *  dX = dA if X > 0
- *  dX = 0  if 0
+ *  dX_i = dA_i if X_i > 0
+ *  dX_i = 0    otherwise
  *
  * Shapes:
  *  X: (n, 1)
  *  A: (n, 1)
  */
-
 typedef struct
 {
     char _; // unused
@@ -35,7 +34,7 @@ static void layer_relu_forward(Layer *self)
 
     Tensor *Z = self->input;
 
-    // A = max(0, X)
+    // A_i = max(0, X_i)
     Tensor *A = tensor_clone(Z);
     if (!A)
     {
@@ -68,8 +67,8 @@ static void layer_relu_backward(Layer *self)
     Tensor *X = self->input;
     Tensor *dA = self->gradient_output;
 
-    // dX = dA if X > 0
-    // dX = 0  if 0
+    // dX_i = dA_i if X_i > 0
+    // dX_i = 0    otherwise
     Tensor *dX = tensor_clone(dA);
     if (!dX)
     {
