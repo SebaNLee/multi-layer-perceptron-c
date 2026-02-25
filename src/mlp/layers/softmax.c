@@ -27,6 +27,47 @@ typedef struct
 
 static void layer_softmax_forward(Layer *self)
 {
+    if (!self || !self->input)
+    {
+        return;
+    }
+
+    Tensor *Z = self->input;
+    Tensor *A = tensor_clone(Z);
+    if (!A)
+    {
+        return;
+    }
+
+    // max(Z)
+    float max = Z->data[0];
+    for (size_t i = 0; i < Z->size; i++)
+    {
+        if (Z->data[i] > max)
+        {
+            max = Z->data[i];
+        }
+    }
+
+    // A_i = exp(Z_i - max(Z)) / (sum_j exp(Z_j - max(Z)))
+    float sum = 0;
+    for (size_t i = 0; i < A->size; i++)
+    {
+        A->data[i] = expf(Z->data[i] - max);
+        sum += A->data[i];
+    }
+
+    for (size_t i = 0; i < A->size; i++)
+    {
+        A->data[i] /= sum;
+    }
+
+    if (self->output)
+    {
+        tensor_free(self->output);
+    }
+
+    self->output = A;
 }
 
 static void layer_softmax_backward(Layer *self)
