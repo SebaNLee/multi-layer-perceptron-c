@@ -1,6 +1,25 @@
 #include "layer.h"
 #include <math.h>
 
+/**
+ * @brief Softmax activation layer
+ *
+ * Forward input:
+ *  X
+ *
+ * Forward computes:
+ *  A_i = exp(X_i - max(X)) / (sum_j exp(X_j - max(X)))
+ *
+ *  Note: Substracting max() to prevent overflows
+ *
+ * Backward:
+ *  Not implemented
+ *  When combined with cross entropy loss, the gradient should be: dZ = prediction - value
+ *
+ * Shapes:
+ *  X: (n, 1)
+ *  A: (n, 1)
+ */
 typedef struct
 {
     char _; // unused
