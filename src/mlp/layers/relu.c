@@ -25,6 +25,33 @@ typedef struct
 {
     char _; // unused
 } ReLU;
+
+static void layer_relu_forward(Layer *self)
+{
+    if (!self || !self->impl)
+    {
+        return;
+    }
+
+    Tensor *Z = self->input;
+
+    // A = max(0, X)
+    Tensor *A = tensor_clone(Z);
+    if (!A)
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < A->size; i++)
+    {
+        if (A->data[i] < 0)
+        {
+            A->data[i] = 0;
+        }
+    }
+
+    self->output = A;
+}
 static void layer_relu_free(Layer *self)
 {
     // holder, just for structure
