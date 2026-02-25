@@ -50,6 +50,11 @@ static void layer_relu_forward(Layer *self)
         }
     }
 
+    if (self->output)
+    {
+        tensor_free(self->output);
+    }
+
     self->output = A;
 }
 
