@@ -3,12 +3,18 @@
 /**
  * @brief Fully connected linear layer
  *
- * Forward:
+ * Foward input:
+ *  X
+ *
+ * Forward computes:
  *  Z = W X + b
  *
- * Backward:
+ * Backward input:
+ *  dZ = gradient_output
+ *
+ * Backward computes:
  *  dW = dZ X^T
- *  db = dZ
+ *  db = dZ (batch size = 1) // TODO
  *  dX = W^T dZ
  *
  * Shapes:
