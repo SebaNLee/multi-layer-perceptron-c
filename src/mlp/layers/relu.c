@@ -25,6 +25,13 @@ typedef struct
 {
     char _; // unused
 } ReLU;
+static void layer_relu_free(Layer *self)
+{
+    // holder, just for structure
+
+    return;
+}
+
 Layer *layer_relu_new(void)
 {
     ReLU *relu = calloc(1, sizeof(ReLU));
