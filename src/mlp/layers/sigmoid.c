@@ -5,19 +5,19 @@
  * @brief Sigmoid activation layer
  *
  * Forward input:
- *  X
+ *  Z
  *
  * Forward computes:
- *  A_i = 1 / (1 + e^(-X_i))
+ *  A_i = 1 / (1 + e^(-Z_i))
  *
  * Backward input:
  *  dA = gradient_output
  *
  * Backward computes:
- *  dX_i = dA_i * A_i * (1 - A_i)
+ *  dZ_i = dA_i * A_i * (1 - A_i)
  *
  * Shapes:
- *  X: (n, 1)
+ *  Z: (n, 1)
  *  A: (n, 1)
  */
 typedef struct
@@ -34,7 +34,7 @@ static void layer_sigmoid_forward(Layer *self)
 
     Tensor *Z = self->input;
 
-    // A_i = 1 / (1 + e^(-X_i))
+    // A_i = 1 / (1 + e^(-Z_i))
     Tensor *A = tensor_clone(Z);
     if (!A)
     {
@@ -65,7 +65,7 @@ static void layer_sigmoid_backward(Layer *self)
     Tensor *A = self->output;
     Tensor *dA = self->gradient_output;
 
-    // dX_i = dA_i * A_i * (1 - A_i)
+    // dZ_i = dA_i * A_i * (1 - A_i)
     Tensor *dX = tensor_clone(dA);
     if (!dX)
     {

@@ -4,20 +4,20 @@
  * @brief ReLU activation layer
  *
  * Forward input:
- *  X
+ *  Z
  *
  * Forward computes:
- *  A_i = max(0, X_i)
+ *  A_i = max(0, Z_i)
  *
  * Backward input:
  *  dA = gradient_output
  *
  * Backward computes:
- *  dX_i = dA_i if X_i > 0
- *  dX_i = 0    otherwise
+ *  dZ_i = dA_i if Z_i > 0
+ *  dZ_i = 0    otherwise
  *
  * Shapes:
- *  X: (n, 1)
+ *  Z: (n, 1)
  *  A: (n, 1)
  */
 typedef struct
@@ -34,7 +34,7 @@ static void layer_relu_forward(Layer *self)
 
     Tensor *Z = self->input;
 
-    // A_i = max(0, X_i)
+    // A_i = max(0, Z_i)
     Tensor *A = tensor_clone(Z);
     if (!A)
     {
@@ -64,11 +64,11 @@ static void layer_relu_backward(Layer *self)
         return;
     }
 
-    Tensor *X = self->input;
+    Tensor *Z = self->input;
     Tensor *dA = self->gradient_output;
 
-    // dX_i = dA_i if X_i > 0
-    // dX_i = 0    otherwise
+    // dZ_i = dA_i if Z_i > 0
+    // dZ_i = 0    otherwise
     Tensor *dX = tensor_clone(dA);
     if (!dX)
     {
@@ -77,7 +77,7 @@ static void layer_relu_backward(Layer *self)
 
     for (size_t i = 0; i < dX->size; i++)
     {
-        if (X->data[i] < 0)
+        if (Z->data[i] < 0)
         {
             dX->data[i] = 0;
         }

@@ -5,10 +5,10 @@
  * @brief Softmax activation layer
  *
  * Forward input:
- *  X
+ *  Z
  *
  * Forward computes:
- *  A_i = exp(X_i - max(X)) / (sum_j exp(X_j - max(X)))
+ *  A_i = exp(Z_i - max(Z)) / (sum_j exp(Z_j - max(Z)))
  *
  *  Note: Substracting max() to prevent overflows
  *
@@ -17,7 +17,7 @@
  *  When combined with cross entropy loss, the gradient should be: dZ = prediction - value
  *
  * Shapes:
- *  X: (n, 1)
+ *  Z: (n, 1)
  *  A: (n, 1)
  */
 typedef struct
