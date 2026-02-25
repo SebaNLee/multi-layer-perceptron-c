@@ -28,7 +28,7 @@ typedef struct
 
 static void layer_relu_forward(Layer *self)
 {
-    if (!self || !self->impl)
+    if (!self || !self->input)
     {
         return;
     }
