@@ -44,7 +44,7 @@ static void layer_relu_forward(Layer *self)
 
     for (size_t i = 0; i < A->size; i++)
     {
-        if (A->data[i] < 0)
+        if (Z->data[i] < 0)
         {
             A->data[i] = 0;
         }
