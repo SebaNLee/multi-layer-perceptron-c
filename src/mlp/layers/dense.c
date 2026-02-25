@@ -1,22 +1,31 @@
 #include "layer.h"
 
+/**
+ * @brief Fully connected linear layer
+ *
+ * Forward:
+ *  Z = W X + b
+ *
+ * Backward:
+ *  dW = dZ X^T
+ *  db = dZ
+ *  dX = W^T dZ
+ *
+ * Shapes:
+ *  W: (output, input)
+ *  b: (output, 1)
+ *  X: (input, 1)
+ *  Z: (output, 1)
+ */
 typedef struct
 {
-    // Z = W X + b
-    // A = phi(Z)
-
-    // dZ = dA
-    // dW = dZ X^T
-    // db = dZ
-    // dX = W^T dZ
-
     Tensor *W; // weights
     Tensor *b; // biases
 
     Tensor *Z; // output (before applying activation function)
 
-    Tensor *dW; // TODO
-    Tensor *db; // TODO
+    Tensor *dW; // weights gradient
+    Tensor *db; // biases gradient
 } Dense;
 
 static void layer_dense_forward(Layer *self)
