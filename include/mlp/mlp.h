@@ -2,10 +2,13 @@
 #include "tensor.h"
 #include <stddef.h>
 
+#define BLOCK 5
+
 typedef struct
 {
     Layer **layers;
     size_t layers_count;
+    size_t layers_size;
 } MLP;
 
 MLP *mlp_new();
