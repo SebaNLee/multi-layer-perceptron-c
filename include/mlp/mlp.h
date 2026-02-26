@@ -8,9 +8,9 @@ typedef struct
     size_t layers_count;
 } MLP;
 
-// TODO
 MLP *mlp_new();
-void mlp_add_layer(MLP *mlp, Layer *l);
-Tensor *mlp_forward(MLP *mlp);
-void mlp_backward(MLP *mlp);
-void mlp_apply_gradients(MLP *mlp);
+void mlp_free(MLP *mlp);
+void mlp_add_layer(MLP *mlp, Layer *layer);
+
+Tensor *mlp_forward(MLP *mlp, Tensor *input);
+void mlp_backward(MLP *mlp, Tensor *gradient_output);
