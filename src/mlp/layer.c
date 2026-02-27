@@ -1,7 +1,7 @@
 #include "mlp/layer.h"
 #include <stdlib.h>
 
-Layer *layer_new(void *impl, LayerOps *ops)
+Layer *layer_new(void *impl, const LayerOps *ops)
 {
     if (!impl || !ops)
     {

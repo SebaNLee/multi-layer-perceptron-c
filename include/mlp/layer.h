@@ -25,7 +25,7 @@ struct Layer
 };
 
 // generic layer API, calls corresponding LayerOps *
-Layer *layer_new(void *impl, LayerOps *ops);
+Layer *layer_new(void *impl, const LayerOps *ops);
 void layer_forward(Layer *layer, Tensor *input);
 void layer_backward(Layer *layer, Tensor *grad_output);
 void layer_free(Layer *layer);
