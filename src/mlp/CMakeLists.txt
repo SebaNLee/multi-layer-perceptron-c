@@ -8,4 +8,4 @@ target_link_libraries(mlp PUBLIC m)
 
 target_compile_options(mlp PRIVATE -Wall -pedantic)
 target_compile_options(mlp PRIVATE -fsanitize=address -g) # TODO debug
-target_link_options(mlp PUBLIC -fsanitize=address -g)
+target_link_options(mlp PUBLIC -fsanitize=address -g) # TODO debug
