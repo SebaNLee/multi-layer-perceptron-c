@@ -58,7 +58,7 @@ Tensor *tensor_new(size_t rank, const size_t *shape)
         return NULL;
     }
 
-    Tensor *tensor = malloc(sizeof(Tensor));
+    Tensor *tensor = calloc(1, sizeof(Tensor));
     if (!tensor)
     {
         return NULL;
@@ -78,12 +78,13 @@ Tensor *tensor_new(size_t rank, const size_t *shape)
         tensor->shape[i] = shape[i];
         tensor->size *= shape[i];
     }
-
     tensor->rank = rank;
     tensor->strides[rank - 1] = 1;
-    for (size_t i = rank - 1; i > 0; i++)
+    size_t i = rank - 1;
+    while (i > 0)
     {
         tensor->strides[i - 1] = tensor->strides[i] * tensor->shape[i];
+        i--;
     }
 
     tensor->data = calloc(tensor->size, sizeof(float));
