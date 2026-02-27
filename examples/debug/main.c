@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     printf("Outputs:\n");
     for (size_t i = 0; i < output->size; i++)
     {
-        printf("[%d]: %f\n", i, output->data[i]);
+        printf("[%ld]: %f\n", i, output->data[i]);
         sum += output->data[i];
     }
     printf("Softmax sum: %f\n", sum);
