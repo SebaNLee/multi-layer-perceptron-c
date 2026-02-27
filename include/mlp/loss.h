@@ -1,3 +1,6 @@
+#ifndef MLP_LOSS_H
+#define MLP_LOSS_H
+
 #include "mlp/tensor.h"
 
 typedef struct
@@ -12,3 +15,5 @@ typedef struct
     LossOps *ops;
     void *impl;
 } Loss;
+
+#endif

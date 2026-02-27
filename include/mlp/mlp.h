@@ -1,3 +1,6 @@
+#ifndef MLP_MLP_H
+#define MLP_LOSS_H
+
 #include "mlp/layer.h"
 #include "mlp/tensor.h"
 #include <stddef.h>
@@ -17,3 +20,5 @@ void mlp_add_layer(MLP *mlp, Layer *layer);
 
 Tensor *mlp_forward(MLP *mlp, Tensor *input);
 void mlp_backward(MLP *mlp, Tensor *gradient_output);
+
+#endif

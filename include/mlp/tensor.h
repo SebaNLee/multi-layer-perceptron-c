@@ -1,3 +1,6 @@
+#ifndef MLP_TENSOR_H
+#define MLP_TENSOR_H
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -33,3 +36,5 @@ Tensor *tensor_matrix_multiplication(const Tensor *tensor1, const Tensor *tensor
 
 Tensor *tensor_transpose_2d(const Tensor *tensor);                              // implementation: returns copy
 Tensor *tensor_reshape(const Tensor *tensor, size_t rank, const size_t *shape); // implementation: returns copy
+
+#endif
