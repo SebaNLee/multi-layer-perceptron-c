@@ -1,5 +1,7 @@
 #include "mlp/tensor.h"
 
+typedef struct Layer Layer;
+
 typedef struct
 {
     void (*forward)(Layer *self);
@@ -7,7 +9,7 @@ typedef struct
     void (*free)(Layer *self);
 } LayerOps;
 
-typedef struct
+struct Layer
 {
     Tensor *input;
     Tensor *output;
@@ -17,7 +19,7 @@ typedef struct
 
     LayerOps *ops;
     void *impl;
-} Layer;
+};
 
 // generic layer API, calls corresponding LayerOps *
 Layer *layer_new(void *impl, LayerOps *ops);

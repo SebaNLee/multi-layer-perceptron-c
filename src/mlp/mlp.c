@@ -1,4 +1,4 @@
-#include "mlp.h"
+#include "mlp/mlp.h"
 
 MLP *mlp_new()
 {
