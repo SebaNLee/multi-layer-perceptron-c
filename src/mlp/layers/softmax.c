@@ -1,4 +1,4 @@
-#include "layer.h"
+#include "mlp/layers/softmax.h"
 #include <math.h>
 
 /**

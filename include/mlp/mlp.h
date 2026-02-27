@@ -1,5 +1,5 @@
-#include "layer.h"
-#include "tensor.h"
+#include "mlp/layer.h"
+#include "mlp/tensor.h"
 #include <stddef.h>
 
 #define BLOCK 5

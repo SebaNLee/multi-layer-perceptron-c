@@ -1,4 +1,4 @@
-#include "tensor.h"
+#include "mlp/tensor.h"
 
 typedef struct
 {

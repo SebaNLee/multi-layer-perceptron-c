@@ -1,4 +1,4 @@
-#include "layer.h"
+#include "mlp/layers/dense.h"
 
 /**
  * @brief Fully connected linear layer
