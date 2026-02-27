@@ -331,9 +331,6 @@ Tensor *tensor_matrix_multiplication(const Tensor *tensor1, const Tensor *tensor
 
             for (size_t k = 0; k < tensor1->shape[1]; k++)
             {
-                size_t tensor1_idx[2] = {i, k};
-                size_t tensor2_idx[2] = {k, j};
-
                 sum += tensor1->data[i * tensor1->shape[1] + k] * tensor2->data[k * tensor2->shape[1] + j]; // TODO should really use tensor_get (check efficiency)
             }
 
