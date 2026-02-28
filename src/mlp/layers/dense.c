@@ -157,7 +157,7 @@ static void layer_dense_free(Layer *self)
     free(dense);
 }
 
-Layer *layer_dense_new(size_t input, size_t output)
+Layer *layer_dense_new(size_t input, size_t output, DenseInit init)
 {
     size_t W_shape[2] = {output, input};
     size_t b_shape[2] = {output, 1};
@@ -178,6 +178,21 @@ Layer *layer_dense_new(size_t input, size_t output)
 
         return NULL;
     }
+
+    switch (init)
+    {
+    case DENSE_INIT_HE:
+        tensor_fill_he(dense->W);
+        break;
+    case DENSE_INIT_XAVIER:
+        tensor_fill_xavier(dense->W);
+        break;
+    default:
+        tensor_fill_xavier(dense->W); // default fallback
+        break;
+    }
+
+    tensor_fill(dense->b, 0);
 
     static const LayerOps ops = {
         .forward = layer_dense_forward,
