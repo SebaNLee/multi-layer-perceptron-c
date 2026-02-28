@@ -16,6 +16,7 @@ typedef struct
 
 MLP *mlp_new();
 void mlp_free(MLP *mlp);
+void mlp_set_seed(size_t seed);
 void mlp_add_layer(MLP *mlp, Layer *layer);
 
 Tensor *mlp_forward(MLP *mlp, Tensor *input);

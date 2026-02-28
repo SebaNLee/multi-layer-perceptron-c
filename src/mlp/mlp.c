@@ -1,5 +1,24 @@
 #include "mlp/mlp.h"
 
+/**
+ * @name Internal helpers
+ * @{
+ */
+
+static void mlp_auto_seed(void);
+
+/** @} */
+
+static bool mlp_flag_seeded = false;
+
+static void mlp_auto_seed(void)
+{
+    if (!mlp_flag_seeded)
+    {
+        mlp_set_seed((size_t)time(NULL));
+    }
+}
+
 MLP *mlp_new()
 {
     MLP *mlp = malloc(sizeof(MLP));
@@ -37,11 +56,22 @@ void mlp_free(MLP *mlp)
     free(mlp);
 }
 
+void mlp_set_seed(size_t seed)
+{
+    srand((unsigned int)seed);
+    mlp_flag_seeded = true;
+}
+
 void mlp_add_layer(MLP *mlp, Layer *layer)
 {
     if (!mlp || !layer)
     {
         return;
+    }
+
+    if (!mlp_flag_seeded)
+    {
+        mlp_auto_seed();
     }
 
     if (mlp->layers_count == mlp->layers_size)
