@@ -20,7 +20,7 @@ struct Layer
     Tensor *gradient_input;
     Tensor *gradient_output;
 
-    LayerOps *ops;
+    const LayerOps *ops;
     void *impl;
 };
 
