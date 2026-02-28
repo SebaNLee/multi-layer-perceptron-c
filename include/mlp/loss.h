@@ -18,4 +18,10 @@ struct Loss
     void *impl;
 };
 
+// generic layer API, calls corresponding LossOps *
+Loss *loss_new(void *impl, const LossOps *ops);
+void loss_forward(Loss *loss, Tensor *y_prediction, Tensor *y_label);
+void loss_backward(Loss *layer, Tensor *y_prediction, Tensor *y_label);
+void loss_free(Loss *loss);
+
 #endif
