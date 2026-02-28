@@ -171,6 +171,51 @@ void tensor_zero(Tensor *tensor)
     memset(tensor->data, 0, tensor->size * sizeof(float));
 }
 
+void tensor_fill_he(Tensor *tensor)
+{
+    if (!tensor || tensor->rank != 2)
+    {
+        return;
+    }
+
+    size_t fan_in = tensor->shape[1];
+
+    if (fan_in == 0)
+    {
+        return;
+    }
+
+    float limit = sqrtf(6 / (float)fan_in);
+
+    for (size_t i = 0; i < tensor->size; i++)
+    {
+        tensor->data[i] = random_uniform_range(-limit, limit);
+    }
+}
+
+void tensor_fill_xavier(Tensor *tensor)
+{
+    if (!tensor || tensor->rank != 2)
+    {
+        return;
+    }
+
+    size_t fan_in = tensor->shape[1];
+    size_t fan_out = tensor->shape[0];
+
+    if (fan_in + fan_out == 0)
+    {
+        return;
+    }
+
+    float limit = sqrtf(6 / (float)(fan_in + fan_out));
+
+    for (size_t i = 0; i < tensor->size; i++)
+    {
+        tensor->data[i] = random_uniform_range(-limit, limit);
+    }
+}
+
 Tensor *tensor_add(const Tensor *tensor1, const Tensor *tensor2)
 {
     if (!tensor1 || !tensor2 || !tensor_same_shape(tensor1, tensor2))
