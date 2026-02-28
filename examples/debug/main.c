@@ -10,10 +10,11 @@
 int main(int argc, char *argv[])
 {
     MLP *mlp = mlp_new();
+    mlp_set_seed(22); // TODO constant arbitrary
 
-    mlp_add_layer(mlp, layer_dense_new(4, 8));
+    mlp_add_layer(mlp, layer_dense_new(4, 8, DENSE_INIT_HE));
     mlp_add_layer(mlp, layer_relu_new());
-    mlp_add_layer(mlp, layer_dense_new(8, 3));
+    mlp_add_layer(mlp, layer_dense_new(8, 3, DENSE_INIT_XAVIER));
     mlp_add_layer(mlp, layer_softmax_new());
 
     // debug input
