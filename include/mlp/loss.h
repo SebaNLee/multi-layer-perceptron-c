@@ -3,6 +3,8 @@
 
 #include "mlp/tensor.h"
 
+typedef struct Loss Loss;
+
 typedef struct
 {
     float (*forward)(Loss *self, const Tensor *y_prediction, const Tensor *y_label);
@@ -10,10 +12,10 @@ typedef struct
     void (*free)(Loss *self);
 } LossOps;
 
-typedef struct
+struct Loss
 {
     LossOps *ops;
     void *impl;
-} Loss;
+};
 
 #endif
