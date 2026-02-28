@@ -7,6 +7,7 @@
 
 static bool tensor_same_shape(const Tensor *tensor1, const Tensor *tensor2);
 static size_t tensor_offset(const Tensor *tensor, const size_t *idx);
+static float random_uniform_range(float min, float max); // TODO move if there are more generic math functions
 
 /** @} */
 
@@ -49,6 +50,11 @@ static size_t tensor_offset(const Tensor *tensor, const size_t *idx)
     }
 
     return offset;
+}
+
+static float random_uniform_range(float min, float max)
+{
+    return min + (max - min) * ((float)rand() / (float)RAND_MAX);
 }
 
 Tensor *tensor_new(size_t rank, const size_t *shape)

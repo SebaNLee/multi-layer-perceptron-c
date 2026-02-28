@@ -1,10 +1,12 @@
 #ifndef MLP_TENSOR_H
 #define MLP_TENSOR_H
 
+#include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct
 {
@@ -24,6 +26,8 @@ Tensor *tensor_clone(const Tensor *tensor);
 
 void tensor_fill(Tensor *tensor, float value);
 void tensor_zero(Tensor *tensor);
+void tensor_fill_he(Tensor *tensor);     // rank 2
+void tensor_fill_xavier(Tensor *tensor); // rank 2
 
 Tensor *tensor_add(const Tensor *tensor1, const Tensor *tensor2); // implementation: returns copy
 Tensor *tensor_sub(const Tensor *tensor1, const Tensor *tensor2); // implementation: returns copy
