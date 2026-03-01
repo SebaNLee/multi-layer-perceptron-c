@@ -4,6 +4,7 @@
 #include "mlp/layers/relu.h"
 #include "mlp/layers/sigmoid.h"
 #include "mlp/layers/softmax.h"
+#include "mlp/loss/mean_squared_error.h"
 #include "mlp/mlp.h"
 #include "mlp/tensor.h"
 
@@ -25,6 +26,16 @@ int main(int argc, char *argv[])
         input->data[i] = i;
     }
 
+    // debug output
+    size_t y_shape[] = {3, 1};
+    Tensor *y = tensor_new(2, y_shape);
+    tensor_zero(y);
+    y->data[1] = 1; // hardcode label
+
+    // FIRST
+    printf("\nFIRST\n");
+
+    // debug forward
     Tensor *output = mlp_forward(mlp, input);
 
     float sum = 0;
@@ -36,6 +47,39 @@ int main(int argc, char *argv[])
     }
     printf("Softmax sum: %f\n", sum);
 
+    // debug forward loss
+    Loss *loss = loss_mean_squared_error_new();
+    float loss_value = loss_forward(loss, output, y);
+    printf("Loss value: %f\n", loss_value);
+
+    // debug backward
+    Tensor *gradient = loss_backward(loss, output, y);
+    mlp_backward(mlp, gradient);
+
+    // SECOND
+    printf("\nSECOND\n");
+
+    // forward again (should have converged) // TODO
+    output = mlp_forward(mlp, input);
+
+    sum = 0;
+    printf("Outputs:\n");
+    for (size_t i = 0; i < output->size; i++)
+    {
+        printf("[%ld]: %f\n", i, output->data[i]);
+        sum += output->data[i];
+    }
+    printf("Softmax sum: %f\n", sum);
+
+    // loss again
+    loss_free(loss);
+    loss = loss_mean_squared_error_new();
+    loss_value = loss_forward(loss, output, y);
+    printf("Loss value: %f\n", loss_value);
+
+    loss_free(loss);
+    tensor_free(gradient);
+    tensor_free(y);
     tensor_free(input);
     mlp_free(mlp);
 
