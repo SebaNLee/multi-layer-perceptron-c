@@ -1,5 +1,26 @@
 #include "mlp/loss/mean_squared_error.h"
 
+/**
+ * @brief Mean Squared Error loss
+ *
+ * Forward input:
+ *  y_prediction
+ *  y_label
+ *
+ * Forward computes:
+ *  L = 0.5 * sum_i (y_prediction_i - y_label_i)^2
+ *
+ * Backward input:
+ *  y_prediction
+ *  y_label
+ *
+ * Backward computes:
+ *  dL_i = (y_prediction_i - y_label_i)
+ *
+ * Shapes:
+ *  y_prediction: (n, 1)
+ *  y_label: (n, 1)
+ */
 typedef struct
 {
     char _; // unused
