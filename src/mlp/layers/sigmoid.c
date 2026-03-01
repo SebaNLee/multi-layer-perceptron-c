@@ -87,9 +87,15 @@ static void layer_sigmoid_backward(Layer *self)
 
 static void layer_sigmoid_free(Layer *self)
 {
-    // holder, just for structure
+    if (!self)
+    {
+        return;
+    }
 
-    return;
+    if (self->impl)
+    {
+        free(self->impl);
+    }
 }
 
 Layer *layer_sigmoid_new(void)

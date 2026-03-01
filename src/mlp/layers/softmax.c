@@ -76,9 +76,15 @@ static void layer_softmax_backward(Layer *self)
 
 static void layer_softmax_free(Layer *self)
 {
-    // holder, just for structure
+    if (!self)
+    {
+        return;
+    }
 
-    return;
+    if (self->impl)
+    {
+        free(self->impl);
+    }
 }
 
 Layer *layer_softmax_new(void)

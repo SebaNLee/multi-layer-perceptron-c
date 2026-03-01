@@ -150,7 +150,6 @@ static void layer_dense_free(Layer *self)
 
     tensor_free(dense->W);
     tensor_free(dense->b);
-    tensor_free(dense->Z);
     tensor_free(dense->dW);
     tensor_free(dense->db);
 

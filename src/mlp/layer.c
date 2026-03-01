@@ -59,5 +59,15 @@ void layer_free(Layer *layer)
         layer->ops->free(layer);
     }
 
+    if (layer->output)
+    {
+        tensor_free(layer->output);
+    }
+
+    if (layer->gradient_input)
+    {
+        tensor_free(layer->gradient_input);
+    }
+
     free(layer);
 }
