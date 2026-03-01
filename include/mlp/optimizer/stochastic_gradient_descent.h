@@ -1,0 +1,6 @@
+#ifndef MLP_OPTIMIZER_STOCHASTIC_GRADIENT_DESCENT_H
+#define MLP_OPTIMIZER_STOCHASTIC_GRADIENT_DESCENT_H
+
+#include "mlp/optimizer.h"
+
+#endif
