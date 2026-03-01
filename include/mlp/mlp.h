@@ -1,5 +1,5 @@
 #ifndef MLP_MLP_H
-#define MLP_LOSS_H
+#define MLP_MLP_H
 
 #include "mlp/layer.h"
 #include "mlp/tensor.h"
