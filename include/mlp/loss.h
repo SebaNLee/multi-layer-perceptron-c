@@ -14,14 +14,14 @@ typedef struct
 
 struct Loss
 {
-    LossOps *ops;
+    const LossOps *ops;
     void *impl;
 };
 
 // generic layer API, calls corresponding LossOps *
 Loss *loss_new(void *impl, const LossOps *ops);
-void loss_forward(Loss *loss, Tensor *y_prediction, Tensor *y_label);
-void loss_backward(Loss *layer, Tensor *y_prediction, Tensor *y_label);
+float loss_forward(Loss *loss, const Tensor *y_prediction, const Tensor *y_label);
+Tensor *loss_backward(Loss *loss, const Tensor *y_prediction, const Tensor *y_label);
 void loss_free(Loss *loss);
 
 #endif
