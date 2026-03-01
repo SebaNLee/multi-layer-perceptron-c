@@ -54,7 +54,7 @@ static Tensor *loss_mean_squared_error_backward(Loss *self, const Tensor *y_pred
     Tensor *gradient = tensor_new(y_prediction->rank, y_prediction->shape);
     if (!gradient)
     {
-        return;
+        return NULL;
     }
 
     for (size_t i = 0; i < gradient->size; i++)
