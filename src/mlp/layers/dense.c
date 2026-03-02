@@ -157,7 +157,7 @@ static void layer_dense_apply_gradients(Layer *self, float learning_rate)
 
     Dense *dense = self->impl;
 
-    if (!dense->W || !dense->dW || !dense->b || !dense->dW)
+    if (!dense->W || !dense->dW || !dense->b || !dense->db)
     {
         return;
     }
