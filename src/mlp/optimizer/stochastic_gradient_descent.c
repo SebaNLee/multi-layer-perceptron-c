@@ -1,5 +1,4 @@
 #include "mlp/optimizer/stochastic_gradient_descent.h"
-#include "mlp/layers/dense.h"
 
 /**
  * @brief Stochastic gradient descent optimizer
