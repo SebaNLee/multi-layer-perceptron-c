@@ -6,6 +6,8 @@
 #include "mlp/layers/softmax.h"
 #include "mlp/loss/mean_squared_error.h"
 #include "mlp/mlp.h"
+#include "mlp/optimizer.h"
+#include "mlp/optimizer/stochastic_gradient_descent.h"
 #include "mlp/tensor.h"
 
 int main(int argc, char *argv[])
@@ -32,55 +34,41 @@ int main(int argc, char *argv[])
     tensor_zero(y);
     y->data[1] = 1; // hardcode label
 
-    // FIRST
-    printf("\nFIRST\n");
-
-    // debug forward
-    Tensor *output = mlp_forward(mlp, input);
-
-    float sum = 0;
-    printf("Outputs:\n");
-    for (size_t i = 0; i < output->size; i++)
-    {
-        printf("[%ld]: %f\n", i, output->data[i]);
-        sum += output->data[i];
-    }
-    printf("Softmax sum: %f\n", sum);
-
-    // debug forward loss
     Loss *loss = loss_mean_squared_error_new();
-    float loss_value = loss_forward(loss, output, y);
-    printf("Loss value: %f\n", loss_value);
+    Optimizer *optimizer = optimizer_stochastic_gradient_descent_new(0.1);
 
-    // debug backward
-    Tensor *gradient = loss_backward(loss, output, y);
-    mlp_backward(mlp, gradient);
-
-    // SECOND
-    printf("\nSECOND\n");
-
-    // forward again (should have converged) // TODO
-    output = mlp_forward(mlp, input);
-
-    sum = 0;
-    printf("Outputs:\n");
-    for (size_t i = 0; i < output->size; i++)
+    for (size_t epoch = 0; epoch < 100; epoch++)
     {
-        printf("[%ld]: %f\n", i, output->data[i]);
-        sum += output->data[i];
+        Tensor *output = mlp_forward(mlp, input);
+
+        float loss_value = loss_forward(loss, output, y);
+        Tensor *gradient = loss_backward(loss, output, y);
+
+        mlp_backward(mlp, gradient);
+        optimizer_step(optimizer, mlp);
+
+        if (epoch % 10 == 0)
+        {
+            printf("Epoch: %ld\n", epoch);
+            printf("Outputs:\n");
+            float sum = 0;
+            for (size_t i = 0; i < output->size; i++)
+            {
+                printf("[%ld]: %f\n", i, output->data[i]);
+                sum += output->data[i];
+            }
+            printf("Softmax sum: %f\n", sum);
+            printf("Loss value: %f\n", loss_value);
+            printf("\n");
+        }
+
+        tensor_free(gradient);
     }
-    printf("Softmax sum: %f\n", sum);
-
-    // loss again
-    loss_free(loss);
-    loss = loss_mean_squared_error_new();
-    loss_value = loss_forward(loss, output, y);
-    printf("Loss value: %f\n", loss_value);
 
     loss_free(loss);
-    tensor_free(gradient);
     tensor_free(y);
     tensor_free(input);
+    optimizer_free(optimizer);
     mlp_free(mlp);
 
     return 0;
