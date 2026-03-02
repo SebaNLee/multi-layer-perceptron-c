@@ -40,7 +40,7 @@ static size_t tensor_offset(const Tensor *tensor, const size_t *idx)
     size_t offset = 0;
     for (size_t i = 0; i < tensor->rank; i++)
     {
-        if (idx[i] < tensor->shape[i])
+        if (idx[i] >= tensor->shape[i])
         {
             // TODO error
             return 0;
