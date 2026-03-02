@@ -13,8 +13,7 @@
  *  Note: Substracting max() to prevent overflows
  *
  * Backward:
- *  Not implemented
- *  When combined with cross entropy loss, the gradient should be: dZ = prediction - value
+ *  dZ = y_prediction - y_label
  *
  * Shapes:
  *  Z: (n, 1)
@@ -72,6 +71,17 @@ static void layer_softmax_forward(Layer *self)
 
 static void layer_softmax_backward(Layer *self)
 {
+    if (!self || !self->gradient_output)
+    {
+        return;
+    }
+
+    if (self->gradient_input)
+    {
+        tensor_free(self->gradient_input);
+    }
+
+    self->gradient_input = tensor_clone(self->gradient_output);
 }
 
 static void layer_softmax_free(Layer *self)
