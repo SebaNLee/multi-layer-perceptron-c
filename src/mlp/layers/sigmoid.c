@@ -109,6 +109,7 @@ Layer *layer_sigmoid_new(void)
     static const LayerOps ops = {
         .forward = layer_sigmoid_forward,
         .backward = layer_sigmoid_backward,
+        .apply_gradients = NULL,
         .free = layer_sigmoid_free};
 
     Layer *layer = layer_new(sigmoid, &ops);

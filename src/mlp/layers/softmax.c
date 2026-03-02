@@ -98,6 +98,7 @@ Layer *layer_softmax_new(void)
     static const LayerOps ops = {
         .forward = layer_softmax_forward,
         .backward = layer_softmax_backward,
+        .apply_gradients = NULL,
         .free = layer_softmax_free};
 
     Layer *layer = layer_new(softmax, &ops);

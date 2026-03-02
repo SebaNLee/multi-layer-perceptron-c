@@ -115,6 +115,7 @@ Layer *layer_relu_new(void)
     static const LayerOps ops = {
         .forward = layer_relu_forward,
         .backward = layer_relu_backward,
+        .apply_gradients = NULL,
         .free = layer_relu_free};
 
     Layer *layer = layer_new(relu, &ops);

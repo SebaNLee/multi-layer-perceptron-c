@@ -4,8 +4,8 @@
 /**
  * @brief Stochastic gradient descent optimizer
  *
- * W = W - alfa * dW
- * b = b - alfa * db
+ * W = W - learning_rate * dW
+ * b = b - learning_rate * db
  *
  */
 typedef struct

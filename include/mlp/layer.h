@@ -9,6 +9,7 @@ typedef struct
 {
     void (*forward)(Layer *self);
     void (*backward)(Layer *self);
+    void (*apply_gradients)(Layer *self, float learning_rate);
     void (*free)(Layer *self);
 } LayerOps;
 

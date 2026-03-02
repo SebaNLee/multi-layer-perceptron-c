@@ -17,6 +17,10 @@
  *  db = dZ (batch size = 1) // TODO
  *  dX = W^T dZ
  *
+ * Applies gradients:
+ *  W = W - learning_rate * dW
+ *  b = b - learning_rate * db
+ *
  * Shapes:
  *  W: (output, input)
  *  b: (output, 1)
@@ -144,6 +148,31 @@ static void layer_dense_backward(Layer *self)
     dense->db = db;
 }
 
+static void layer_dense_apply_gradients(Layer *self, float learning_rate)
+{
+    if (!self || !self->impl)
+    {
+        return;
+    }
+
+    Dense *dense = self->impl;
+
+    if (!dense->W || !dense->dW || !dense->b || !dense->dW)
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < dense->W->size; i++)
+    {
+        dense->W->data[i] -= learning_rate * dense->dW->data[i];
+    }
+
+    for (size_t i = 0; i < dense->b->size; i++)
+    {
+        dense->b->data[i] -= learning_rate * dense->db->data[i];
+    }
+}
+
 static void layer_dense_free(Layer *self)
 {
     Dense *dense = self->impl;
@@ -196,6 +225,7 @@ Layer *layer_dense_new(size_t input, size_t output, DenseInit init)
     static const LayerOps ops = {
         .forward = layer_dense_forward,
         .backward = layer_dense_backward,
+        .apply_gradients = layer_dense_apply_gradients,
         .free = layer_dense_free};
 
     Layer *layer = layer_new(dense, &ops);
