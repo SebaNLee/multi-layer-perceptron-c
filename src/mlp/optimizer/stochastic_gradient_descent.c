@@ -22,7 +22,15 @@ static void optimizer_stochastic_gradient_descent_step(Optimizer *self, MLP *mlp
 
     StochasticGradientDescent *sgd = self->impl;
 
-    // TODO
+    for (size_t i = 0; i < mlp->layers_count; i++)
+    {
+        Layer *layer = mlp->layers[i];
+
+        if (layer && layer->ops && layer->ops->apply_gradients)
+        {
+            layer->ops->apply_gradients(layer, sgd->learning_rate);
+        }
+    }
 }
 
 static void optimizer_stochastic_gradient_descent_free(Optimizer *self)
