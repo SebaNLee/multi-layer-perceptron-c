@@ -19,3 +19,37 @@ CMake:
     <execute binary path>
 
  -->
+
+
+
+ <!-- 
+ 
+# Multi Layer Perceptron C
+
+(description)
+
+## Usage (library)
+
+(contract)
+
+
+## For devs
+
+(commands, precommit setup, Cmake structure)
+
+
+## Lore
+
+(lore)
+
+
+## Examples and Results
+
+### 9for each example)
+
+(.sh scripts)
+(results with numbers)
+
+ 
+ 
+  -->
