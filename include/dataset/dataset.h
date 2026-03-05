@@ -2,7 +2,10 @@
 #define DATASET_DATASET_H
 
 #include "mlp/tensor.h"
+#include <stdbool.h>
 #include <stddef.h>
+
+typedef struct Dataset Dataset;
 
 typedef struct
 {
@@ -13,18 +16,18 @@ typedef struct
     void (*free)(Dataset *self);
 } DatasetOps;
 
-typedef struct
+struct Dataset
 {
     const DatasetOps *ops;
     void *impl;
-} Dataset;
+};
 
 Dataset *dataset_new(void *impl, const DatasetOps *ops);
 void dataset_free(Dataset *dataset);
 
 size_t dataset_size(Dataset *dataset);
 void dataset_shuffle(Dataset *dataset);
-bool dataset_next_batch(Dataset *dataset, Tensor **inputs, Tensor **lables, size_t batch_size);
+bool dataset_next_batch(Dataset *dataset, Tensor **inputs, Tensor **labels, size_t batch_size);
 void dataset_reset(Dataset *dataset);
 
 #endif
