@@ -17,8 +17,10 @@
  *  dZ_i = 0    otherwise
  *
  * Shapes:
- *  Z: (n, 1)
- *  A: (n, 1)
+ *  Z: (n, batch_size)
+ *  A: (n, batch_size)
+ *  dZ: (n, batch_size)
+ *  dA: (n, batch_size)
  */
 typedef struct
 {
@@ -43,7 +45,7 @@ static void layer_relu_forward(Layer *self)
 
     for (size_t i = 0; i < A->size; i++)
     {
-        if (Z->data[i] < 0)
+        if (Z->data[i] < 0) // TODO check math
         {
             A->data[i] = 0;
         }

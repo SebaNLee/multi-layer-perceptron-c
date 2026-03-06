@@ -17,8 +17,10 @@
  *  dZ_i = dA_i * A_i * (1 - A_i)
  *
  * Shapes:
- *  Z: (n, 1)
- *  A: (n, 1)
+ *  Z: (n, batch_size)
+ *  A: (n, batch_size)
+ *  dZ: (n, batch_size)
+ *  dA: (n, batch_size)
  */
 typedef struct
 {
@@ -44,7 +46,7 @@ static void layer_sigmoid_forward(Layer *self)
     for (size_t i = 0; i < A->size; i++)
     {
 
-        A->data[i] = 1 / (1 + expf(-Z->data[i]));
+        A->data[i] = 1 / (1 + expf(-Z->data[i])); // TODO check expf overflow
     }
 
     if (self->output)

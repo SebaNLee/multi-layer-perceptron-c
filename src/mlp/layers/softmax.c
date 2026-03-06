@@ -15,9 +15,11 @@
  * Backward:
  *  dZ = y_prediction - y_label
  *
+ *  Note: Implementation for cross_entropy.c
+ *
  * Shapes:
- *  Z: (n, 1)
- *  A: (n, 1)
+ *  Z: (n, batch)
+ *  A: (n, batch)
  */
 typedef struct
 {
