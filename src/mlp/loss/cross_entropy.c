@@ -18,7 +18,7 @@
  *  y_label
  *
  * Backward computes:
- *  dL_i = y_prediction_i - y_label_i
+ *  dL_i = (1/batch_size) * (y_prediction_i - y_label_i)
  *
  * Shapes:
  *  y_prediction: (n, batch)
@@ -69,9 +69,11 @@ static Tensor *loss_cross_entropy_backward(Loss *self, const Tensor *y_predictio
         return NULL;
     }
 
+    float inv_batch_size = 1 / (float)y_prediction->shape[1];
+
     for (size_t i = 0; i < gradient->size; i++)
     {
-        gradient->data[i] = y_prediction->data[i] - y_label->data[i];
+        gradient->data[i] = (y_prediction->data[i] - y_label->data[i]) * inv_batch_size;
     }
 
     return gradient;

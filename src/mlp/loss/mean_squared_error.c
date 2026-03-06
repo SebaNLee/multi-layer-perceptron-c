@@ -8,18 +8,18 @@
  *  y_label
  *
  * Forward computes:
- *  L = 0.5 * sum_i (y_prediction_i - y_label_i)^2
+ *  L = (1/batch_size) * 0.5 * sum_i (y_prediction_i - y_label_i)^2
  *
  * Backward input:
  *  y_prediction
  *  y_label
  *
  * Backward computes:
- *  dL_i = (y_prediction_i - y_label_i)
+ *  dL_i = (1/batch_size) * (y_prediction_i - y_label_i)
  *
  * Shapes:
- *  y_prediction: (n, 1)
- *  y_label: (n, 1)
+ *  y_prediction: (n, batch_size)
+ *  y_label: (n, batch_size)
  */
 typedef struct
 {
@@ -41,7 +41,9 @@ static float loss_mean_squared_error_forward(Loss *self, const Tensor *y_predict
         loss += 0.5 * error * error;
     }
 
-    return loss;
+    size_t batch_size = y_prediction->shape[1];
+
+    return loss / (float)batch_size;
 }
 
 static Tensor *loss_mean_squared_error_backward(Loss *self, const Tensor *y_prediction, const Tensor *y_label)
@@ -57,9 +59,11 @@ static Tensor *loss_mean_squared_error_backward(Loss *self, const Tensor *y_pred
         return NULL;
     }
 
+    float inv_batch_size = 1 / (float)y_prediction->shape[1];
+
     for (size_t i = 0; i < gradient->size; i++)
     {
-        gradient->data[i] = y_prediction->data[i] - y_label->data[i];
+        gradient->data[i] = (y_prediction->data[i] - y_label->data[i]) * inv_batch_size;
     }
 
     return gradient;

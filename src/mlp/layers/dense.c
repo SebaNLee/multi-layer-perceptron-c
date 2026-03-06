@@ -13,8 +13,8 @@
  *  dZ = gradient_output
  *
  * Backward computes:
- *  dW = (1/batch_size) dZ X^T
- *  db = (1/batch_size) (sum dZ, axis=batch_size)
+ *  dW = dZ X^T
+ *  db = sum (dZ, axis=batch_size)
  *  dX = W^T dZ
  *
  * Applies gradients:
@@ -118,12 +118,6 @@ static void layer_dense_backward(Layer *self)
         return;
     }
 
-    float inv_batch_size = (float)1 / batch_size;
-    for (size_t i = 0; i < dW->size; i++)
-    {
-        dW->data[i] *= inv_batch_size;
-    }
-
     // dX = W^T dZ
     Tensor *W_transposed = tensor_transpose_2d(W);
     if (!W_transposed)
@@ -140,7 +134,7 @@ static void layer_dense_backward(Layer *self)
         return;
     }
 
-    // b = (1/batch_size) (sum dZ, axis=batch_size)
+    // db = sum (dZ, axis=batch_size)
     size_t db_shape[2] = {output_size, 1};
     Tensor *db = tensor_new(2, db_shape);
     if (!db)
@@ -159,7 +153,7 @@ static void layer_dense_backward(Layer *self)
             sum += dZ->data[i * batch_size + j]; // TODO use tensor api (less efficiency)
         }
 
-        db->data[i] = sum * inv_batch_size;
+        db->data[i] = sum;
     }
 
     // assign results
