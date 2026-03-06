@@ -15,7 +15,8 @@
 int main(int argc, char *argv[])
 {
     MLP *mlp = mlp_new();
-    mlp_set_seed(time(NULL));
+    // mlp_set_seed(time(NULL));
+    mlp_set_seed(22); // TODO hardcode seed before bathc impl
 
     mlp_add_layer(mlp, layer_dense_new(2, 8, DENSE_INIT_HE));
     mlp_add_layer(mlp, layer_relu_new());
