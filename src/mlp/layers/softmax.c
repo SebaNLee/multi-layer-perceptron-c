@@ -34,33 +34,46 @@ static void layer_softmax_forward(Layer *self)
     }
 
     Tensor *Z = self->input;
+    size_t n = Z->shape[0];
+    size_t batch_size = Z->shape[1];
+
     Tensor *A = tensor_clone(Z);
     if (!A)
     {
         return;
     }
 
-    // max(Z)
-    float max = Z->data[0];
-    for (size_t i = 0; i < Z->size; i++)
-    {
-        if (Z->data[i] > max)
-        {
-            max = Z->data[i];
-        }
-    }
-
     // A_i = exp(Z_i - max(Z)) / (sum_j exp(Z_j - max(Z)))
-    float sum = 0;
-    for (size_t i = 0; i < A->size; i++)
+    for (size_t i = 0; i < batch_size; i++)
     {
-        A->data[i] = expf(Z->data[i] - max);
-        sum += A->data[i];
-    }
+        // max(Z) for every batch
+        float max = Z->data[i];
 
-    for (size_t i = 0; i < A->size; i++)
-    {
-        A->data[i] /= sum;
+        for (size_t j = 0; j < n; j++)
+        {
+            size_t idx = j * batch_size + i;
+            float curr = Z->data[idx];
+            if (curr > max)
+            {
+                max = curr;
+            }
+        }
+
+        // exponents
+        float sum = 0;
+        for (size_t j = 0; j < n; j++)
+        {
+            size_t idx = j * batch_size + i;
+            A->data[idx] = expf(Z->data[idx] - max);
+            sum += A->data[idx];
+        }
+
+        // normalization
+        for (size_t j = 0; j < n; j++)
+        {
+            size_t idx = j * batch_size + i;
+            A->data[idx] /= sum;
+        }
     }
 
     if (self->output)
