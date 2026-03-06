@@ -6,5 +6,5 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 add_subdirectory(src/mlp)
-# add_subdirectory(src/dataset) # TODO
+add_subdirectory(src/dataset)
 add_subdirectory(examples)
