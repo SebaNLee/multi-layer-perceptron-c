@@ -29,6 +29,7 @@
  *  dW: (output, input)
  *  db: (output, 1)
  *  dX: (input, batch)
+ *  dZ: (output, batch)
  */
 typedef struct
 {
@@ -52,6 +53,8 @@ static void layer_dense_forward(Layer *self)
     Tensor *X = self->input;
     Tensor *W = dense->W;
     Tensor *b = dense->b;
+    size_t output_size = W->shape[0];
+    size_t batch_size = X->shape[1];
 
     // Z = W X + b
     Tensor *WX = tensor_matrix_multiplication(W, X);
@@ -60,12 +63,23 @@ static void layer_dense_forward(Layer *self)
         return;
     }
 
-    Tensor *Z = tensor_add(WX, b);
-    tensor_free(WX);
+    Tensor *Z = tensor_new(2, WX->shape);
     if (!Z)
     {
+        tensor_free(WX);
         return;
     }
+
+    for (size_t i = 0; i < output_size; i++)
+    {
+        for (size_t j = 0; j < batch_size; j++)
+        {
+            size_t idx = i * batch_size + j;
+            Z->data[idx] = WX->data[idx] + b->data[i];
+        }
+    }
+
+    tensor_free(WX);
 
     if (dense->Z)
     {
@@ -87,6 +101,8 @@ static void layer_dense_backward(Layer *self)
     Tensor *X = self->input;
     Tensor *dZ = self->gradient_output;
     Tensor *W = dense->W;
+    size_t output_size = dZ->shape[0];
+    size_t batch_size = dZ->shape[1];
 
     // dW = dZ X^T
     Tensor *X_transposed = tensor_transpose_2d(X);
@@ -100,6 +116,12 @@ static void layer_dense_backward(Layer *self)
     if (!dW)
     {
         return;
+    }
+
+    float inv_batch_size = (float)1 / batch_size;
+    for (size_t i = 0; i < dW->size; i++)
+    {
+        dW->data[i] *= inv_batch_size;
     }
 
     // dX = W^T dZ
@@ -118,16 +140,26 @@ static void layer_dense_backward(Layer *self)
         return;
     }
 
-    // !!
-    // !! TODO batch management
-    // !!
-    // db = dZ (batch size = 1)
-    Tensor *db = tensor_clone(dZ);
+    // b = (1/batch_size) (sum dZ, axis=batch_size)
+    size_t db_shape[2] = {output_size, 1};
+    Tensor *db = tensor_new(2, db_shape);
     if (!db)
     {
         tensor_free(dX);
         tensor_free(dW);
         return;
+    }
+
+    for (size_t i = 0; i < output_size; i++)
+    {
+        float sum = 0;
+
+        for (size_t j = 0; j < batch_size; j++)
+        {
+            sum += dZ->data[i * batch_size + j]; // TODO use tensor api (less efficiency)
+        }
+
+        db->data[i] = sum * inv_batch_size;
     }
 
     // assign results
