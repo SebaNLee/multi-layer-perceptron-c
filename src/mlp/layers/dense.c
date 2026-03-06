@@ -13,8 +13,8 @@
  *  dZ = gradient_output
  *
  * Backward computes:
- *  dW = dZ X^T
- *  db = dZ (batch size = 1) // TODO
+ *  dW = (1/batch_size) dZ X^T
+ *  db = (1/batch_size) (sum dZ, axis=batch_size)
  *  dX = W^T dZ
  *
  * Applies gradients:
@@ -24,8 +24,11 @@
  * Shapes:
  *  W: (output, input)
  *  b: (output, 1)
- *  X: (input, 1)
- *  Z: (output, 1)
+ *  X: (input, batch)
+ *  Z: (output, batch)
+ *  dW: (output, input)
+ *  db: (output, 1)
+ *  dX: (input, batch)
  */
 typedef struct
 {
