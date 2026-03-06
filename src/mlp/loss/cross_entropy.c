@@ -11,7 +11,7 @@
  *  y_label
  *
  * Forward computes:
- *  L = - sum_i y_label_i * log(y_prediction_i)
+ *  L = - (1/batch_size) * sum_i y_label_i * log(y_prediction_i)
  *
  * Backward input:
  *  y_prediction
@@ -21,8 +21,8 @@
  *  dL_i = y_prediction_i - y_label_i
  *
  * Shapes:
- *  y_prediction: (n, 1)
- *  y_label: (n, 1)
+ *  y_prediction: (n, batch)
+ *  y_label: (n, batch)
  */
 typedef struct
 {
@@ -51,7 +51,9 @@ static float loss_cross_entropy_forward(Loss *self, const Tensor *y_prediction, 
         loss -= y_label->data[i] * logf(y_prediction_i);
     }
 
-    return loss;
+    size_t batch_size = y_prediction->shape[1];
+
+    return loss / batch_size;
 }
 
 static Tensor *loss_cross_entropy_backward(Loss *self, const Tensor *y_prediction, const Tensor *y_label)
