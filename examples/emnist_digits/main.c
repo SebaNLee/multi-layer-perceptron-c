@@ -1,0 +1,160 @@
+#include "dataset_emnist_digits.h"
+#include "mlp/layers/dense.h"
+#include "mlp/layers/relu.h"
+#include "mlp/layers/sigmoid.h"
+#include "mlp/layers/softmax.h"
+#include "mlp/loss/cross_entropy.h"
+#include "mlp/mlp.h"
+#include "mlp/optimizer.h"
+#include "mlp/optimizer/stochastic_gradient_descent.h"
+#include <stdio.h>
+#include <time.h>
+
+#define EPOCHS 8
+#define BATCH_SIZE 64
+#define EMNIST_DIGITS_CLASSES 10
+
+int main(int argc, char *argv[])
+{
+    MLP *mlp = mlp_new();
+    mlp_set_seed(time(NULL));
+
+    // TODO debug version
+    mlp_add_layer(mlp, layer_dense_new(784, 2, DENSE_INIT_HE));
+    mlp_add_layer(mlp, layer_relu_new());
+    mlp_add_layer(mlp, layer_dense_new(2, 10, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_softmax_new());
+
+    // complete version
+    // mlp_add_layer(mlp, layer_dense_new(784, 128, DENSE_INIT_HE));
+    // mlp_add_layer(mlp, layer_relu_new());
+    // mlp_add_layer(mlp, layer_dense_new(128, 64, DENSE_INIT_HE));
+    // mlp_add_layer(mlp, layer_relu_new());
+    // mlp_add_layer(mlp, layer_dense_new(64, 10, DENSE_INIT_XAVIER));
+    // mlp_add_layer(mlp, layer_softmax_new());
+
+    Loss *loss = loss_cross_entropy_new();
+    Optimizer *optimizer = optimizer_stochastic_gradient_descent_new(0.1);
+    Dataset *train_dataset = dataset_emnist_digits_new(TRAIN);
+    Dataset *test_dataset = dataset_emnist_digits_new(TEST);
+
+    printf("===TRAINING===\n");
+
+    for (size_t epoch = 0; epoch < EPOCHS; epoch++)
+    {
+        float epoch_loss_sum = 0;
+        size_t epoch_batches = 0;
+
+        dataset_reset(train_dataset);
+        dataset_shuffle(train_dataset);
+
+        Tensor *input = NULL;
+        Tensor *label = NULL;
+
+        while (dataset_next_batch(train_dataset, &input, &label, BATCH_SIZE))
+        {
+            Tensor *output = mlp_forward(mlp, input);
+            epoch_loss_sum += loss_forward(loss, output, label);
+
+            Tensor *gradient = loss_backward(loss, output, label);
+            mlp_backward(mlp, gradient);
+            optimizer_step(optimizer, mlp);
+
+            tensor_free(gradient);
+            tensor_free(input);
+            tensor_free(label);
+
+            epoch_batches++;
+        }
+
+        if (epoch_batches > 0)
+        {
+            printf("Epoch: %ld\n", epoch);
+            printf("Loss: %f\n", epoch_loss_sum / (float)epoch_batches);
+            printf("\n");
+        }
+    }
+
+    printf("===RESULTS===\n");
+
+    dataset_reset(test_dataset);
+
+    Tensor *input = NULL;
+    Tensor *label = NULL;
+    size_t correct = 0;
+    size_t total = 0;
+    float test_loss_sum = 0;
+    size_t test_batches = 0;
+    float average_true_class_confidence_sum = 0;
+
+    while (dataset_next_batch(test_dataset, &input, &label, BATCH_SIZE))
+    {
+        Tensor *output = mlp_forward(mlp, input);
+        test_loss_sum += loss_forward(loss, output, label);
+        test_batches++;
+
+        size_t current_batch_size = input->shape[1];
+
+        for (size_t i = 0; i < current_batch_size; i++)
+        {
+            size_t prediction_class = 0;
+            float prediction_value = output->data[i];
+
+            for (size_t j = 0; j < EMNIST_DIGITS_CLASSES; j++)
+            {
+                size_t idx = j * current_batch_size + i;
+                float current_prediction = output->data[idx];
+
+                if (current_prediction > prediction_value)
+                {
+                    prediction_value = current_prediction;
+                    prediction_class = j;
+                }
+            }
+
+            size_t target_class = 0;
+            float target_value = label->data[i];
+
+            for (size_t j = 0; j < EMNIST_DIGITS_CLASSES; j++)
+            {
+                size_t idx = j * current_batch_size + i;
+                float current_target = label->data[idx];
+
+                if (current_target > target_value)
+                {
+                    target_value = current_target;
+                    target_class = j;
+                }
+            }
+
+            if (prediction_class == target_class)
+            {
+                correct++;
+            }
+
+            average_true_class_confidence_sum += output->data[target_class * current_batch_size + i];
+            total++;
+        }
+
+        tensor_free(input);
+        tensor_free(label);
+    }
+
+    if (total > 0)
+    {
+        float accuracy = ((float)correct / total) * 100;
+        float average_true_class_confidence = (average_true_class_confidence_sum / total) * 100;
+        printf("\n");
+        printf("Model Accuracy: %.2f%% (%ld/%ld)\n", accuracy, correct, total);
+        printf("Mean Test Loss: %f%%\n", test_loss_sum / test_batches);
+        printf("Average True Class Confidence: %f%%\n", average_true_class_confidence);
+    }
+
+    dataset_free(train_dataset);
+    dataset_free(test_dataset);
+    loss_free(loss);
+    optimizer_free(optimizer);
+    mlp_free(mlp);
+
+    return 0;
+}
