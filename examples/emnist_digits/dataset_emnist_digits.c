@@ -163,8 +163,8 @@ Dataset *dataset_emnist_digits_new(EmnistSubset subset)
     }
     else if (subset == TEST)
     {
-        images_path = "../datasets/emnist/emnist-digits-test-images-idx3-ubyte";
-        labels_path = "../datasets/emnist/emnist-digits-test-labels-idx1-ubyte";
+        images_path = "datasets/emnist/emnist-digits-test-images-idx3-ubyte";
+        labels_path = "datasets/emnist/emnist-digits-test-labels-idx1-ubyte";
     }
     else
     {
