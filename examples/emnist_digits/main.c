@@ -19,19 +19,12 @@ int main(int argc, char *argv[])
     MLP *mlp = mlp_new();
     mlp_set_seed(time(NULL));
 
-    // TODO debug version
-    mlp_add_layer(mlp, layer_dense_new(784, 2, DENSE_INIT_HE));
+    mlp_add_layer(mlp, layer_dense_new(784, 64, DENSE_INIT_HE));
     mlp_add_layer(mlp, layer_relu_new());
-    mlp_add_layer(mlp, layer_dense_new(2, 10, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_dense_new(64, 32, DENSE_INIT_HE));
+    mlp_add_layer(mlp, layer_relu_new());
+    mlp_add_layer(mlp, layer_dense_new(32, 10, DENSE_INIT_XAVIER));
     mlp_add_layer(mlp, layer_softmax_new());
-
-    // complete version
-    // mlp_add_layer(mlp, layer_dense_new(784, 128, DENSE_INIT_HE));
-    // mlp_add_layer(mlp, layer_relu_new());
-    // mlp_add_layer(mlp, layer_dense_new(128, 64, DENSE_INIT_HE));
-    // mlp_add_layer(mlp, layer_relu_new());
-    // mlp_add_layer(mlp, layer_dense_new(64, 10, DENSE_INIT_XAVIER));
-    // mlp_add_layer(mlp, layer_softmax_new());
 
     Loss *loss = loss_cross_entropy_new();
     Optimizer *optimizer = optimizer_stochastic_gradient_descent_new(0.1);
