@@ -368,26 +368,34 @@ Tensor *tensor_matrix_multiplication(const Tensor *tensor1, const Tensor *tensor
         return NULL;
     }
 
-    size_t result_shape[2] = {tensor1->shape[0], tensor2->shape[1]};
+    size_t tensor1_rows = tensor1->shape[0];
+    size_t tensor1_cols = tensor1->shape[1];
+    size_t tensor2_cols = tensor2->shape[1];
+
+    size_t result_shape[2] = {tensor1_rows, tensor2_cols};
     Tensor *result = tensor_new(2, result_shape);
     if (!result)
     {
         return NULL;
     }
 
-    for (size_t i = 0; i < tensor1->shape[0]; i++)
+    float *result_data = result->data;
+    const float *tensor1_data = tensor1->data;
+    const float *tensor2_data = tensor2->data;
+
+    for (size_t i = 0; i < tensor1_rows; i++)
     {
-        for (size_t j = 0; j < tensor2->shape[1]; j++)
+        float *result_row = result_data + i * tensor2_cols;
+
+        for (size_t k = 0; k < tensor1_cols; k++)
         {
-            float sum = 0;
+            float tensor1_value = tensor1_data[i * tensor1_cols + k];
+            const float *tensor2_row = tensor2_data + k * tensor2_cols;
 
-            for (size_t k = 0; k < tensor1->shape[1]; k++)
+            for (size_t j = 0; j < tensor2_cols; j++)
             {
-                sum += tensor1->data[i * tensor1->shape[1] + k] * tensor2->data[k * tensor2->shape[1] + j]; // TODO should really use tensor_get (check efficiency)
+                result_row[j] += tensor1_value * tensor2_row[j];
             }
-
-            size_t result_idx[2] = {i, j};
-            tensor_set(result, result_idx, sum);
         }
     }
 
