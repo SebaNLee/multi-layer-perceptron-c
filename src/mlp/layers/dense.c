@@ -57,16 +57,9 @@ static void layer_dense_forward(Layer *self)
     size_t batch_size = X->shape[1];
 
     // Z = W X + b
-    Tensor *WX = tensor_matrix_multiplication(W, X);
-    if (!WX)
-    {
-        return;
-    }
-
-    Tensor *Z = tensor_new(2, WX->shape);
+    Tensor *Z = tensor_matrix_multiplication(W, X);
     if (!Z)
     {
-        tensor_free(WX);
         return;
     }
 
@@ -75,11 +68,9 @@ static void layer_dense_forward(Layer *self)
         for (size_t j = 0; j < batch_size; j++)
         {
             size_t idx = i * batch_size + j;
-            Z->data[idx] = WX->data[idx] + b->data[i];
+            Z->data[idx] = Z->data[idx] + b->data[i];
         }
     }
-
-    tensor_free(WX);
 
     if (dense->Z)
     {
