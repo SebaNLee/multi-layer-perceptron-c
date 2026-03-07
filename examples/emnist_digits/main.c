@@ -16,6 +16,11 @@
 
 int main(int argc, char *argv[])
 {
+    // time
+    clock_t start, end;
+    double runtime;
+    start = clock();
+
     MLP *mlp = mlp_new();
     mlp_set_seed(time(NULL));
 
@@ -148,6 +153,10 @@ int main(int argc, char *argv[])
     loss_free(loss);
     optimizer_free(optimizer);
     mlp_free(mlp);
+
+    end = clock();
+    runtime = ((double)(end - start)) / CLOCKS_PER_SEC;
+    printf("Runtime: %fs\n", runtime);
 
     return 0;
 }
