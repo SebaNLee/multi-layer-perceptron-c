@@ -5,5 +5,3 @@ add_library(dataset ${DATASET_SOURCE})
 target_include_directories(dataset PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 target_compile_options(dataset PRIVATE -Wall -pedantic)
-target_compile_options(dataset PRIVATE -fsanitize=address -g) # TODO debug
-target_link_options(dataset PUBLIC -fsanitize=address -g) # TODO debug
