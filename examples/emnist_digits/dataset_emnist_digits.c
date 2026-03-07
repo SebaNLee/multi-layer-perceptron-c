@@ -158,13 +158,13 @@ Dataset *dataset_emnist_digits_new(EmnistSubset subset)
     char *labels_path = NULL;
     if (subset == TRAIN)
     {
-        images_path = "datasets/emnist/emnist-digits-train-images-idx3-ubyte";
-        labels_path = "datasets/emnist/emnist-digits-train-labels-idx1-ubyte";
+        images_path = "../datasets/emnist/emnist-digits-train-images-idx3-ubyte";
+        labels_path = "../datasets/emnist/emnist-digits-train-labels-idx1-ubyte";
     }
     else if (subset == TEST)
     {
-        images_path = "datasets/emnist/emnist-digits-test-images-idx3-ubyte";
-        labels_path = "datasets/emnist/emnist-digits-test-labels-idx1-ubyte";
+        images_path = "../datasets/emnist/emnist-digits-test-images-idx3-ubyte";
+        labels_path = "../datasets/emnist/emnist-digits-test-labels-idx1-ubyte";
     }
     else
     {
