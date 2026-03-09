@@ -7,7 +7,7 @@ DATASETS_DIR="$ROOT_DIR/datasets"
 TARGET=$1
 
 # args validation
-if [ "$TARGET" != "all" ] && [ "$TARGET" != "emnist" ] && [ "$TARGET" != "mushroom" ] && [ "$TARGET" != "shopper" ] && [ "$TARGET" != "heart" ]; then
+if [ "$TARGET" != "all" ] && [ "$TARGET" != "emnist" ] && [ "$TARGET" != "mushroom" ] && [ "$TARGET" != "shopper" ] && [ "$TARGET" != "heart" ] && [ "$TARGET" != "meteorite" ] && [ "$TARGET" != "engine" ]; then
     echo "Usage: ./datasets.sh [all|emnist|mushroom|shopper|heart]"
     exit 1
 fi
@@ -49,5 +49,16 @@ if [ "$TARGET" = "all" ] || [ "$TARGET" = "heart" ]; then
     wget_unzip "heart" "https://archive.ics.uci.edu/static/public/45/heart+disease.zip"
 
 fi
+if [ "$TARGET" = "all" ] || [ "$TARGET" = "meteorite" ]; then
+    rm -rf "$DATASETS_DIR/meteorite"
+    mkdir -p "$DATASETS_DIR/meteorite"
+    (
+        cd "$DATASETS_DIR/meteorite"
+        wget -q --show-progress "https://data.nasa.gov/docs/legacy/meteorite_landings/Meteorite_Landings.csv"
+    )
 
+fi
+if [ "$TARGET" = "all" ] || [ "$TARGET" = "engine" ]; then
+    wget_unzip "engine" "https://data.nasa.gov/docs/legacy/CMAPSSData.zip"
 
+fi
