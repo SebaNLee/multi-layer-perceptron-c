@@ -7,8 +7,8 @@ DATASETS_DIR="$ROOT_DIR/datasets"
 TARGET=$1
 
 # args validation
-if [ "$TARGET" != "all" ] && [ "$TARGET" != "emnist" ] && [ "$TARGET" != "mushroom" ] && [ "$TARGET" != "heart" ] && [ "$TARGET" != "meteorite" ] && [ "$TARGET" != "engine" ]; then
-    echo "Usage: ./datasets.sh [all|emnist|mushroom|heart]"
+if [ "$TARGET" != "all" ] && [ "$TARGET" != "emnist" ] && [ "$TARGET" != "mushroom" ] && [ "$TARGET" != "meteorite" ] && [ "$TARGET" != "engine" ]; then
+    echo "Usage: ./datasets.sh [all|emnist|mushroom]"
     exit 1
 fi
 
@@ -39,10 +39,6 @@ if [ "$TARGET" = "all" ] || [ "$TARGET" = "emnist" ]; then
 fi
 if [ "$TARGET" = "all" ] || [ "$TARGET" = "mushroom" ]; then
     wget_unzip "mushroom" "https://archive.ics.uci.edu/static/public/73/mushroom.zip"
-
-fi
-if [ "$TARGET" = "all" ] || [ "$TARGET" = "heart" ]; then
-    wget_unzip "heart" "https://archive.ics.uci.edu/static/public/45/heart+disease.zip"
 
 fi
 if [ "$TARGET" = "all" ] || [ "$TARGET" = "meteorite" ]; then
