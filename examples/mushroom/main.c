@@ -1,3 +1,4 @@
+#include "dataset_mushroom.h"
 #include "mlp/layers/dense.h"
 #include "mlp/layers/relu.h"
 #include "mlp/layers/sigmoid.h"
