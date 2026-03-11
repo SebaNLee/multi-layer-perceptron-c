@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     mlp_add_layer(mlp, layer_relu_new());
     mlp_add_layer(mlp, layer_dense_new(64, 32, DENSE_INIT_HE));
     mlp_add_layer(mlp, layer_relu_new());
-    mlp_add_layer(mlp, layer_dense_new(32, 10, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_dense_new(32, EMNIST_DIGITS_CLASSES, DENSE_INIT_XAVIER));
     mlp_add_layer(mlp, layer_softmax_new());
 
     Loss *loss = loss_cross_entropy_new();
