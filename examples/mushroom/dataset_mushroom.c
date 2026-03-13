@@ -237,8 +237,7 @@ Dataset *dataset_mushroom_new(void)
             token = strtok(NULL, ",");
         }
 
-        size_t *curr_labels = dataset_mushroom->labels + row;
-        curr_labels[labels_index[(unsigned char)fields[0][0]]] = 1;
+        dataset_mushroom->labels[row] = labels_index[(unsigned char)fields[0][0]] = 1;
 
         float *curr_inputs = dataset_mushroom->inputs + row * MUSHROOM_FEATURES;
         for (size_t i = 1; i < DATASET_COLUMNS; i++)
