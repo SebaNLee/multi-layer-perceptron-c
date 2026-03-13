@@ -1,8 +1,8 @@
-#ifndef EXAMPLES_METEORITE_DATASET_METEORITE_H
-#define EXAMPLES_METEORITE_DATASET_METEORITE_H
+#ifndef EXAMPLES_ENGINE_DATASET_ENGINE_H
+#define EXAMPLES_ENGINE_DATASET_ENGINE_H
 
 #include "dataset/dataset.h"
 
-Dataset *dataset_meteorite_new(void);
+Dataset *dataset_engine_new(void);
 
 #endif
