@@ -9,19 +9,16 @@ EXAMPLE=$2
 rm -rf ./build
 mkdir build
 
-# configure CMake mode
-cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug
-cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release
-
-# compile
-cmake --build build/debug
-cmake --build build/release
-
-# run
 if [ "$MODE" = "debug" ]; then
-    ./build/debug/examples/$EXAMPLE
+    BUILD_DIR=build/debug
+    cmake -S . -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE=Debug
+    cmake --build "$BUILD_DIR" --target "$EXAMPLE"
+    ./"$BUILD_DIR"/examples/"$EXAMPLE"
 elif [ "$MODE" = "release" ]; then
-    ./build/release/examples/$EXAMPLE
+    BUILD_DIR=build/release
+    cmake -S . -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE=Release
+    cmake --build "$BUILD_DIR" --target "$EXAMPLE"
+    ./"$BUILD_DIR"/examples/"$EXAMPLE"
 else
     echo "Usage: ./run.sh [debug|release] <example>"
     exit 1
