@@ -11,7 +11,7 @@
 #include <time.h>
 
 #define EPOCHS 8
-#define BATCH_SIZE 64
+#define BATCH_SIZE 32
 #define EMNIST_DIGITS_CLASSES 10
 
 int main(int argc, char *argv[])
@@ -24,8 +24,10 @@ int main(int argc, char *argv[])
     MLP *mlp = mlp_new();
     mlp_set_seed(time(NULL));
 
-    mlp_add_layer(mlp, layer_dense_new(784, 64, DENSE_INIT_HE));
-    mlp_add_layer(mlp, layer_relu_new());
+    mlp_add_layer(mlp, layer_dense_new(784, 128, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_sigmoid_new());
+    mlp_add_layer(mlp, layer_dense_new(128, 64, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_sigmoid_new());
     mlp_add_layer(mlp, layer_dense_new(64, 32, DENSE_INIT_HE));
     mlp_add_layer(mlp, layer_relu_new());
     mlp_add_layer(mlp, layer_dense_new(32, EMNIST_DIGITS_CLASSES, DENSE_INIT_XAVIER));

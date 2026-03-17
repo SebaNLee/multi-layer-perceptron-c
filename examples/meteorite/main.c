@@ -2,6 +2,7 @@
 #include "mlp/layers/dense.h"
 #include "mlp/layers/relu.h"
 #include "mlp/layers/softmax.h"
+#include "mlp/layers/sigmoid.h"
 #include "mlp/loss/cross_entropy.h"
 #include "mlp/mlp.h"
 #include "mlp/optimizer.h"
@@ -9,8 +10,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#define EPOCHS 20
-#define BATCH_SIZE 64
+#define EPOCHS 40
+#define BATCH_SIZE 32
 #define METEORITE_FEATURES 4
 #define METEORITE_CLASSES 2
 
@@ -25,13 +26,15 @@ int main(int argc, char *argv[])
 
     mlp_add_layer(mlp, layer_dense_new(METEORITE_FEATURES, 256, DENSE_INIT_HE));
     mlp_add_layer(mlp, layer_relu_new());
-    mlp_add_layer(mlp, layer_dense_new(256, 256, DENSE_INIT_HE));
-    mlp_add_layer(mlp, layer_relu_new());
+    mlp_add_layer(mlp, layer_dense_new(256, 256, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_sigmoid_new());
+    mlp_add_layer(mlp, layer_dense_new(256, 256, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_sigmoid_new());
     mlp_add_layer(mlp, layer_dense_new(256, METEORITE_CLASSES, DENSE_INIT_XAVIER));
     mlp_add_layer(mlp, layer_softmax_new());
 
     Loss *loss = loss_cross_entropy_new();
-    Optimizer *optimizer = optimizer_stochastic_gradient_descent_new(0.05);
+    Optimizer *optimizer = optimizer_stochastic_gradient_descent_new(0.1);
     Dataset *dataset = dataset_meteorite_new();
 
     size_t total_size = dataset_size(dataset);
