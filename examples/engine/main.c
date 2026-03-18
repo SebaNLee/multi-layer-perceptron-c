@@ -45,7 +45,8 @@ int main(int argc, char *argv[])
     size_t train_size = (size_t)((float)total_size * 0.8);
     size_t test_size = total_size - train_size;
 
-    printf("===TRAINING===\n");
+    printf("\nTRAINING\n");
+    printf("Epoch ./.\nAvg Loss:\n");
 
     for (size_t epoch = 0; epoch < EPOCHS; epoch++)
     {
@@ -85,13 +86,12 @@ int main(int argc, char *argv[])
 
         if (epoch_batches > 0)
         {
-            printf("Epoch: %ld\n", epoch);
-            printf("Loss: %f\n", epoch_loss_sum / (float)epoch_batches);
-            printf("\n");
+            printf("\033[2A\033[2K\033[1B\033[2K\033[1A");
+            printf("Epoch %ld/%d\n", epoch + 1, EPOCHS);
+            printf("Avg Loss: %f\n", epoch_loss_sum / epoch_batches);
+            fflush(stdout);
         }
     }
-
-    printf("===RESULTS===\n");
 
     dataset_reset(dataset);
 
@@ -118,6 +118,7 @@ int main(int argc, char *argv[])
     float test_loss_sum = 0;
     size_t test_batches = 0;
     float absolute_error_sum = 0;
+    float average_true_class_confidence_sum = 0;
     size_t correct = 0;
     size_t total = 0;
 
@@ -133,11 +134,13 @@ int main(int argc, char *argv[])
             float prediction = output->data[i];
             float target = label->data[i];
             float error = prediction - target;
+            float true_class_confidence = target >= 0.5f ? prediction : (1.0f - prediction);
             if (error < 0)
             {
                 error = -error;
             }
             absolute_error_sum += error;
+            average_true_class_confidence_sum += true_class_confidence;
             if (error <= TOLERANCE)
             {
                 correct++;
@@ -152,11 +155,13 @@ int main(int argc, char *argv[])
     if (total > 0)
     {
         float accuracy = ((float)correct / (float)total) * 100.0f;
+        float average_true_class_confidence = (average_true_class_confidence_sum / total) * 100;
+        printf("\nRESULTS\n");
+        printf("Model Accuracy                : %9.5f%% (%ld/%ld)\n", accuracy, correct, total);
+        printf("Average True Class Confidence : %9.5f%%\n", average_true_class_confidence);
+        printf("Mean Test Loss                : %9.5f\n", test_loss_sum / (float)test_batches);
+        printf("Test Samples                  : %ld/%ld\n", test_size, total_size);
         printf("\n");
-        printf("Accuracy (|error| <= %.2f): %.2f%% (%ld/%ld)\n", TOLERANCE, accuracy, correct, total);
-        printf("Mean Test Loss: %f\n", test_loss_sum / (float)test_batches);
-        printf("Mean Absolute Error: %f\n", absolute_error_sum / (float)total);
-        printf("Test Samples: %ld/%ld\n", test_size, total_size);
     }
 
     dataset_free(dataset);
