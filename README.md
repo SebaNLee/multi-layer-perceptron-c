@@ -26,7 +26,7 @@ $ ./datasets.sh [all|emnist|mushroom|meteorite|engine]
 
 ## Results
 
-### EMNIST Digits
+#### EMNIST Digits
 
 ```
 MLP:  784 -> 128(Sigmoid) -> 64(Sigmoid) -> 32(ReLU) -> 10(Softmax)
@@ -42,7 +42,7 @@ Test Samples                  : 40000/40000
 Runtime: 117.204315s
 ```
 
-### EMNIST Letters
+#### EMNIST Letters
 
 ```
 MLP:  784 -> 256(Sigmoid) -> 128(ReLU) ->26(Softmax)
@@ -58,7 +58,7 @@ Test Samples                  : 20800/20800
 Runtime: 134.920381s
 ```
 
-### NASA Meteorite Landings
+#### NASA Meteorite Landings
 
 ```
 MLP:  4 -> 256(ReLU) -> 256(Sigmoid) -> 256(Sigmoid) -> 2(Softmax)
@@ -74,7 +74,7 @@ Test Samples                  : 409/2042
 Runtime: 4.003218s
 ```
 
-### NASA CMAPSS Jet Engine Simulated Data
+#### NASA CMAPSS Jet Engine Simulated Data
 
 ```
 MLP:  24 -> 256(ReLU) -> 128(ReLU) -> 1(Sigmoid)
@@ -90,7 +90,7 @@ Test Samples                  : 4127/20631
 Runtime: 7.771604s
 ```
 
-### UCI Mushroom
+#### UCI Mushroom
 
 ```
 MLP:  127 -> 128(ReLU) -> 64(ReLU) -> 2(Softmax)
@@ -106,7 +106,7 @@ Test Samples                  : 1625/8124
 Runtime: 1.233496s
 ```
 
-### XOR
+#### XOR
 
 ```
 MLP:  2 -> 8(ReLU) -> 2(Softmax)
