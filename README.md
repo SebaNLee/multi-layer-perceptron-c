@@ -12,7 +12,7 @@ TODO
 
 ## Scripts Usage
 
-Detailed below are implemented examples that uses the library with the specified datasets and the results obtained. The ```run.sh``` shell scripts automates the execution of these and ```dataset.sh``` handles the download of the datasets.
+Detailed below are implemented examples that use the library with the specified datasets and the results obtained. The ```run.sh``` shell script automates their execution, and ```dataset.sh``` handles the download of the datasets.
 
 You can use the shell scrips like this:
 
@@ -127,17 +127,22 @@ Runtime: 0.011155s
 (contract)
 
 
-## For devs
+## Devs
 
+To standardize code format, there is a pre-commit hook that uses Clang when committing. It can be installed with: 
+
+```
 pip install pre-commit
 pre-commit install
-(automatically applies clang formatting and adds it to the staging area)
+```
 
-CMake:
-    cd build
-    cmake ..
-    make
-    <execute binary path>
+For manual compilation and execution of the generated Makefiles and example binaries, run:
+
+```
+build$ cmake ..
+build$ make
+$ ./build/examples/<binary>
+```
 
 ## Reference Materials
 
