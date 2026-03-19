@@ -1,6 +1,6 @@
 TODO
 
-## Multi Layer Perceptron C
+# Multi Layer Perceptron C
 
 This repository implements a Multilayer Perceptron (MLP) library from scratch in C, without the use of external libraries. The implementation covers core concepts in neural networks, such as forward propagation, backpropagation, loss calculation, and parameter optimization. The library is designed in a modular way, allowing flexible declaration of layers, activation functions, loss functions and other configurations.
 
@@ -152,3 +152,34 @@ $ ./build/examples/<binary>
 
 ## Reference Materials
 
+#### Main references
+
+Learning Representations by Back-Propagating Errors (1986) by David E. Rumelhart, Geoffrey E. Hinton and Ronald J. Williams [[1](https://www.nature.com/articles/323533a0)] [[2](https://www.cs.toronto.edu/~hinton/absps/naturebp.pdf)]
+
+Multilayer Perceptron, Explained: A Visual Guide with Mini 2D Dataset [[Medium](https://medium.com/data-science/multilayer-perceptron-explained-a-visual-guide-with-mini-2d-dataset-0ae8100c5d1c)]
+
+#### More references
+
+Neural Network and Deep Learning, Richard Nielsen [[1](http://neuralnetworksanddeeplearning.com/index.html)]
+
+Building a Multi-Layer Perceptron from Scratch with NumPy [[Medium](https://elcaiseri.medium.com/building-a-multi-layer-perceptron-from-scratch-with-numpy-e4cee82ab06d)]
+
+Xavier and He Normal (He-et-al) Initialization [[Medium](https://prateekvishnu.medium.com/xavier-and-he-normal-he-et-al-initialization-8e3d7a087528)]
+
+Neural networks [[YouTube Playlist](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)]
+
+Building a neural network FROM SCRATCH (no Tensorflow/Pytorch, just numpy & math) [[YouTube](https://www.youtube.com/watch?v=w8yWXqWQYmU)]
+
+Neural-Network-from-scratch-without-TensorFlow-PyTorch [[GitHub](https://github.com/OmBaval/Neural-Network-from-scratch-without-TensorFlow-PyTorch)]
+
+Deep Learning With PyTorch — Tensor Basics: Stride, Offset, Contiguous Tensors [[Medium](https://medium.com/swlh/deep-learning-with-pytorch-tensor-basics-part-1-stride-offset-contiguous-tensors-5d87476b7d9f)]
+
+#### Datasets
+
+EMNIST [[NIST](https://www.nist.gov/itl/products-and-services/emnist-dataset)]
+
+NASA Meteorite Landings [[NASA Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings)]
+
+NASA CMAPSS Jet Engine Simulated Data [[NASA Open Data Portal](https://data.nasa.gov/dataset/cmapss-jet-engine-simulated-data)]
+
+UCI Mushroom [[UCI](https://archive.ics.uci.edu/dataset/73/mushroom)]
