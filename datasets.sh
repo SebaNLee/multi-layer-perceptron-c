@@ -8,7 +8,7 @@ TARGET=$1
 
 # args validation
 if [ "$TARGET" != "all" ] && [ "$TARGET" != "emnist" ] && [ "$TARGET" != "mushroom" ] && [ "$TARGET" != "meteorite" ] && [ "$TARGET" != "engine" ]; then
-    echo "Usage: ./datasets.sh [all|emnist|mushroom]"
+    echo "Usage: ./datasets.sh [all|emnist|mushroom|meteorite|engine]"
     exit 1
 fi
 
