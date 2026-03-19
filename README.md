@@ -2,7 +2,13 @@ TODO
 
 ## Multi Layer Perceptron C
 
-<!-- This repo implements a Multilayer Perceptron library made from scratch in C. Should work in any machine as it is native C without usage of external libraries. -->
+This repository implements a Multilayer Perceptron (MLP) library from scratch in C, without the use of external libraries. The implementation covers core concepts in neural networks, such as forward propagation, backpropagation, loss calculation, and parameter optimization. The library is designed in a modular way, allowing flexible declaration of layers, activation functions, loss functions and other configurations.
+
+The design and general structure are primarily based on *Learning Representations by Back-Propagating Errors* (1986) by David E. Rumelhart, Geoffrey E. Hinton and Ronald J. Williams [[1]] [[2]].
+
+[1]: https://www.nature.com/articles/323533a0
+[2]: https://www.cs.toronto.edu/~hinton/absps/naturebp.pdf
+
 
 ## Lore
 
