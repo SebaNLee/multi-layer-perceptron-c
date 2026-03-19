@@ -23,11 +23,11 @@ int main(int argc, char *argv[])
     MLP *mlp = mlp_new();
     mlp_set_seed(time(NULL));
 
-    mlp_add_layer(mlp, layer_dense_new(784, 128, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_dense_new(784, 256, DENSE_INIT_XAVIER));
     mlp_add_layer(mlp, layer_sigmoid_new());
-    mlp_add_layer(mlp, layer_dense_new(128, 64, DENSE_INIT_HE));
+    mlp_add_layer(mlp, layer_dense_new(256, 128, DENSE_INIT_HE));
     mlp_add_layer(mlp, layer_relu_new());
-    mlp_add_layer(mlp, layer_dense_new(64, EMNIST_LETTERS_CLASSES, DENSE_INIT_XAVIER));
+    mlp_add_layer(mlp, layer_dense_new(128, EMNIST_LETTERS_CLASSES, DENSE_INIT_XAVIER));
     mlp_add_layer(mlp, layer_softmax_new());
 
     Loss *loss = loss_cross_entropy_new();
