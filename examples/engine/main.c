@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     size_t train_size = (size_t)((float)total_size * 0.8);
     size_t test_size = total_size - train_size;
 
-    printf("\nTRAINING\n");
+    printf("\nTraining:\n");
     printf("Epoch ./.\nAvg Loss:\n");
 
     for (size_t epoch = 0; epoch < EPOCHS; epoch++)
@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
     {
         float accuracy = ((float)correct / (float)total) * 100.0f;
         float average_true_class_confidence = (average_true_class_confidence_sum / total) * 100;
-        printf("\nRESULTS\n");
+        printf("\nResults:\n");
         printf("Model Accuracy                : %9.5f%% (%ld/%ld)\n", accuracy, correct, total);
         printf("Average True Class Confidence : %9.5f%%\n", average_true_class_confidence);
         printf("Mean Test Loss                : %9.5f\n", test_loss_sum / (float)test_batches);
