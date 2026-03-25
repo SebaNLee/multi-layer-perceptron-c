@@ -128,11 +128,6 @@ Test Samples                  : 4/4
 Runtime: 0.011155s
 ```
 
-## Library Usage
-
-(contract)
-
-
 ## Devs
 
 To standardize code format, there is a pre-commit hook that uses Clang when committing. It can be installed with: 
@@ -149,6 +144,10 @@ build$ cmake ..
 build$ make
 $ ./build/examples/<binary>
 ```
+
+## Library Usage
+
+(contract)
 
 ## Reference Materials
 
