@@ -30,6 +30,12 @@ $ ./run.sh [release|debug] <example>
 $ ./datasets.sh [all|emnist|mushroom|meteorite|engine]
 ```
 
+<!-- TODO compile only library binary
+
+```
+$ ./datasets.sh library
+``` -->
+
 ## Results
 
 #### EMNIST Digits
